@@ -138,8 +138,11 @@ AUTH_USER_MODEL = 'account.CustomUser'
 
 # Authentication URLs
 LOGIN_URL = 'account:login'
-LOGIN_REDIRECT_URL = 'dashboard:dashboard'
+LOGIN_REDIRECT_URL = 'dashboard:dashboard'  # This will auto-redirect based on role
 LOGOUT_REDIRECT_URL = 'account:login'
+
+# Custom permission denied URL
+PERMISSION_DENIED_URL = 'account:login'
 
 
 # Default primary key field type

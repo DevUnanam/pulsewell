@@ -5,12 +5,21 @@ from django.contrib import messages
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
 
 
+def _get_redirect_url_for_user(user):
+    """
+    Determine the appropriate dashboard URL based on user role
+    """
+    if user.is_superuser or user.is_admin:
+        return 'dashboard:admin_dashboard'
+    return 'dashboard:user_dashboard'
+
+
 def register_view(request):
     """
     Handle user registration
     """
     if request.user.is_authenticated:
-        return redirect('dashboard:dashboard')
+        return redirect(_get_redirect_url_for_user(request.user))
 
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
@@ -18,7 +27,7 @@ def register_view(request):
             user = form.save()
             login(request, user)
             messages.success(request, f'Welcome {user.username}! Your account has been created successfully.')
-            return redirect('dashboard:dashboard')
+            return redirect(_get_redirect_url_for_user(user))
         else:
             messages.error(request, 'Please correct the errors below.')
     else:
@@ -29,10 +38,10 @@ def register_view(request):
 
 def login_view(request):
     """
-    Handle user login
+    Handle user login - redirects to appropriate dashboard based on role
     """
     if request.user.is_authenticated:
-        return redirect('dashboard:dashboard')
+        return redirect(_get_redirect_url_for_user(request.user))
 
     if request.method == 'POST':
         form = CustomAuthenticationForm(request, data=request.POST)
@@ -43,8 +52,13 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f'Welcome back, {username}!')
-                next_url = request.GET.get('next', 'dashboard:dashboard')
-                return redirect(next_url)
+                
+                # Check if there's a next parameter, otherwise use role-based redirect
+                next_url = request.GET.get('next')
+                if next_url:
+                    return redirect(next_url)
+                
+                return redirect(_get_redirect_url_for_user(user))
         else:
             messages.error(request, 'Invalid username or password.')
     else:
