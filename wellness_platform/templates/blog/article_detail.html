@@ -6,7 +6,7 @@
 <div class="min-h-screen bg-gradient-to-br from-blue-100 via-indigo-50 to-purple-100 dark:from-gray-900 dark:via-blue-950 dark:to-indigo-950 p-4 sm:p-6 lg:p-8">
     <div class="max-w-4xl mx-auto">
         <!-- Back Button -->
-        <a href="{% url 'blog:article_list' %}" 
+        <a href="{% url 'blog:article_list' %}"
            class="inline-flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 mb-6 transition duration-200">
             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -19,8 +19,8 @@
             <!-- Featured Image -->
             {% if article.image %}
             <div class="aspect-video bg-gray-200 dark:bg-gray-700 overflow-hidden">
-                <img src="{{ article.image.url }}" 
-                     alt="{{ article.title }}" 
+                <img src="{{ article.image.url }}"
+                     alt="{{ article.title }}"
                      class="w-full h-full object-cover">
             </div>
             {% endif %}
@@ -28,7 +28,7 @@
             <!-- Header -->
             <div class="p-6 sm:p-8 border-b border-gray-200 dark:border-gray-700">
                 <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">{{ article.title }}</h1>
-                
+
                 <!-- Metadata -->
                 <div class="flex flex-wrap items-center justify-between text-sm text-gray-600 dark:text-gray-400 gap-4">
                     <div class="flex items-center space-x-4">
@@ -51,14 +51,14 @@
                             <span>{{ article.get_reading_time }} min read</span>
                         </span>
                     </div>
-                    
+
                     {% if user.is_authenticated and user.is_superuser or user.is_admin %}
                     <div class="flex items-center space-x-2">
-                        <a href="{% url 'blog:edit_article' article.slug %}" 
+                        <a href="{% url 'blog:edit_article' article.slug %}"
                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200 text-sm font-medium">
                             Edit
                         </a>
-                        <a href="{% url 'blog:delete_article' article.slug %}" 
+                        <a href="{% url 'blog:delete_article' article.slug %}"
                            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-200 text-sm font-medium">
                             Delete
                         </a>
@@ -108,7 +108,7 @@
                 <div class="mb-4">
                     {{ comment_form.content }}
                 </div>
-                <button type="submit" 
+                <button type="submit"
                         class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition duration-200 shadow-md hover:shadow-lg font-medium">
                     Post Comment
                 </button>
@@ -116,7 +116,7 @@
             {% else %}
             <div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-6 mb-8 border border-gray-200 dark:border-gray-700">
                 <p class="text-gray-600 dark:text-gray-400 text-center">
-                    <a href="{% url 'account:login' %}?next={{ request.path }}" 
+                    <a href="{% url 'account:login' %}?next={{ request.path }}"
                        class="text-indigo-600 dark:text-indigo-400 hover:underline font-medium">
                         Log in
                     </a> to join the conversation
@@ -187,9 +187,9 @@ function likeComment(commentId, button) {
     window.location.href = "{% url 'account:login' %}?next={{ request.path }}";
     return;
     {% endif %}
-    
+
     const csrftoken = getCookie('csrftoken');
-    
+
     fetch(`/blog/comment/${commentId}/like/`, {
         method: 'POST',
         headers: {
@@ -201,7 +201,7 @@ function likeComment(commentId, button) {
     .then(data => {
         const likesSpan = button.querySelector('.likes-count');
         likesSpan.textContent = data.likes_count;
-        
+
         if (data.liked) {
             button.classList.remove('text-gray-600', 'dark:text-gray-400');
             button.classList.add('text-red-600', 'dark:text-red-400');
@@ -218,7 +218,7 @@ function toggleReplyForm(commentId) {
     window.location.href = "{% url 'account:login' %}?next={{ request.path }}";
     return;
     {% endif %}
-    
+
     const form = document.getElementById(`reply-form-${commentId}`);
     form.classList.toggle('hidden');
 }

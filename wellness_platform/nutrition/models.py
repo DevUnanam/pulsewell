@@ -30,7 +30,7 @@ class NutritionGoal(models.Model):
         """Calculate progress towards goals for a specific date"""
         if target_date is None:
             target_date = date.today()
-        
+
         meals = Meal.objects.filter(user=self.user, meal_date=target_date)
         totals = meals.aggregate(
             total_calories=Sum('calories'),
@@ -38,7 +38,7 @@ class NutritionGoal(models.Model):
             total_carbs=Sum('carbs'),
             total_fat=Sum('fat')
         )
-        
+
         return {
             'calories': {
                 'consumed': totals['total_calories'] or 0,
@@ -80,7 +80,7 @@ class Meal(models.Model):
     meal_type = models.CharField(max_length=20, choices=MEAL_TYPE_CHOICES)
     food_name = models.CharField(max_length=200, help_text="Name or description of the food")
     portion = models.CharField(max_length=100, help_text="e.g., 1 cup, 100g, 2 slices")
-    
+
     # Nutritional information
     calories = models.PositiveIntegerField(help_text="Calories (kcal)")
     protein = models.DecimalField(
@@ -101,7 +101,7 @@ class Meal(models.Model):
         default=0,
         help_text="Fat in grams"
     )
-    
+
     # Metadata
     meal_date = models.DateField(default=date.today)
     logged_at = models.DateTimeField(auto_now_add=True)
@@ -124,7 +124,7 @@ class Meal(models.Model):
         """Get nutrition summary for a specific date"""
         if target_date is None:
             target_date = date.today()
-        
+
         meals = cls.objects.filter(user=user, meal_date=target_date)
         totals = meals.aggregate(
             total_calories=Sum('calories'),
@@ -132,7 +132,7 @@ class Meal(models.Model):
             total_carbs=Sum('carbs'),
             total_fat=Sum('fat')
         )
-        
+
         return {
             'date': target_date,
             'meal_count': meals.count(),
@@ -148,27 +148,27 @@ class Meal(models.Model):
         """Get nutrition summary for the past 7 days"""
         if target_date is None:
             target_date = date.today()
-        
+
         start_date = target_date - timedelta(days=6)
         meals = cls.objects.filter(
             user=user,
             meal_date__gte=start_date,
             meal_date__lte=target_date
         )
-        
+
         totals = meals.aggregate(
             total_calories=Sum('calories'),
             total_protein=Sum('protein'),
             total_carbs=Sum('carbs'),
             total_fat=Sum('fat')
         )
-        
+
         meal_type_counts = {}
         for meal_type, _ in cls.MEAL_TYPE_CHOICES:
             meal_type_counts[meal_type] = meals.filter(meal_type=meal_type).count()
-        
+
         most_frequent_meal = max(meal_type_counts.items(), key=lambda x: x[1])[0] if meals.exists() else None
-        
+
         return {
             'start_date': start_date,
             'end_date': target_date,

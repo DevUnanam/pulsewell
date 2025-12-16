@@ -29,11 +29,11 @@
             <form method="post">
                 {% csrf_token %}
                 <div class="flex items-center justify-center space-x-4">
-                    <a href="{% url 'blog:article_detail' article.slug %}" 
+                    <a href="{% url 'blog:article_detail' article.slug %}"
                        class="px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-200 font-medium">
                         Cancel
                     </a>
-                    <button type="submit" 
+                    <button type="submit"
                             class="px-6 py-3 bg-gradient-to-r from-red-600 to-pink-600 text-white rounded-lg hover:from-red-700 hover:to-pink-700 transition duration-200 shadow-md hover:shadow-lg font-medium">
                         Yes, Delete Article
                     </button>

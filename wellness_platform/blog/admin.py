@@ -21,7 +21,7 @@ class ArticleAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
     readonly_fields = ['created_at', 'updated_at', 'comment_count', 'likes_count']
     date_hierarchy = 'created_at'
-    
+
     fieldsets = (
         ('Article Information', {
             'fields': ('title', 'slug', 'author', 'published')
@@ -69,7 +69,7 @@ class CommentAdmin(admin.ModelAdmin):
     search_fields = ['content', 'user__username', 'article__title']
     readonly_fields = ['created_at', 'updated_at', 'likes_count_display']
     date_hierarchy = 'created_at'
-    
+
     fieldsets = (
         ('Comment Information', {
             'fields': ('article', 'user', 'parent')

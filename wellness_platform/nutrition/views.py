@@ -20,7 +20,7 @@ def meal_log(request):
     else:
         # Pre-fill with today's date
         form = MealForm(initial={'meal_date': date.today()})
-    
+
     return render(request, 'nutrition/meal_log.html', {'form': form})
 
 
@@ -28,7 +28,7 @@ def meal_log(request):
 def meal_edit(request, pk):
     """Edit an existing meal"""
     meal = get_object_or_404(Meal, pk=pk, user=request.user)
-    
+
     if request.method == 'POST':
         form = MealForm(request.POST, instance=meal)
         if form.is_valid():
@@ -37,7 +37,7 @@ def meal_edit(request, pk):
             return redirect('nutrition:daily_summary')
     else:
         form = MealForm(instance=meal)
-    
+
     return render(request, 'nutrition/meal_form.html', {
         'form': form,
         'meal': meal,
@@ -49,13 +49,13 @@ def meal_edit(request, pk):
 def meal_delete(request, pk):
     """Delete a meal"""
     meal = get_object_or_404(Meal, pk=pk, user=request.user)
-    
+
     if request.method == 'POST':
         meal_type = meal.get_meal_type_display()
         meal.delete()
         messages.success(request, f'🗑️ {meal_type} deleted successfully!')
         return redirect('nutrition:daily_summary')
-    
+
     return render(request, 'nutrition/meal_confirm_delete.html', {'meal': meal})
 
 
@@ -71,10 +71,10 @@ def daily_summary(request):
             selected_date = date.today()
     else:
         selected_date = date.today()
-    
+
     # Get daily summary
     summary = Meal.get_daily_summary(request.user, selected_date)
-    
+
     # Get user's nutrition goals if they exist
     try:
         nutrition_goal = request.user.nutrition_goal
@@ -82,11 +82,11 @@ def daily_summary(request):
     except NutritionGoal.DoesNotExist:
         nutrition_goal = None
         progress = None
-    
+
     # Calculate previous and next dates for navigation
     prev_date = selected_date - timedelta(days=1)
     next_date = selected_date + timedelta(days=1)
-    
+
     context = {
         'summary': summary,
         'nutrition_goal': nutrition_goal,
@@ -96,7 +96,7 @@ def daily_summary(request):
         'next_date': next_date,
         'is_today': selected_date == date.today(),
     }
-    
+
     return render(request, 'nutrition/daily_summary.html', context)
 
 
@@ -112,20 +112,20 @@ def weekly_summary(request):
             end_date = date.today()
     else:
         end_date = date.today()
-    
+
     # Get weekly summary
     summary = Meal.get_weekly_summary(request.user, end_date)
-    
+
     # Get user's nutrition goals if they exist
     try:
         nutrition_goal = request.user.nutrition_goal
     except NutritionGoal.DoesNotExist:
         nutrition_goal = None
-    
+
     # Calculate previous and next week dates for navigation
     prev_week_end = end_date - timedelta(days=7)
     next_week_end = end_date + timedelta(days=7)
-    
+
     # Get daily data for the week for visualization
     daily_data = []
     for i in range(7):
@@ -139,7 +139,7 @@ def weekly_summary(request):
             'fat': day_summary['total_fat'],
             'meal_count': day_summary['meal_count'],
         })
-    
+
     context = {
         'summary': summary,
         'nutrition_goal': nutrition_goal,
@@ -149,7 +149,7 @@ def weekly_summary(request):
         'next_week_end': next_week_end,
         'is_current_week': end_date == date.today(),
     }
-    
+
     return render(request, 'nutrition/weekly_summary.html', context)
 
 
@@ -160,13 +160,13 @@ def nutrition_goals(request):
         goal = request.user.nutrition_goal
     except NutritionGoal.DoesNotExist:
         goal = None
-    
+
     if request.method == 'POST':
         if goal:
             form = NutritionGoalForm(request.POST, instance=goal)
         else:
             form = NutritionGoalForm(request.POST)
-        
+
         if form.is_valid():
             goal = form.save(commit=False)
             goal.user = request.user
@@ -175,7 +175,7 @@ def nutrition_goals(request):
             return redirect('nutrition:daily_summary')
     else:
         form = NutritionGoalForm(instance=goal)
-    
+
     return render(request, 'nutrition/nutrition_goals.html', {
         'form': form,
         'goal': goal
@@ -186,20 +186,20 @@ def nutrition_goals(request):
 def meal_history(request):
     """View complete meal history"""
     meals = Meal.objects.filter(user=request.user).select_related('user')
-    
+
     # Filter by meal type if provided
     meal_type_filter = request.GET.get('meal_type')
     if meal_type_filter and meal_type_filter in dict(Meal.MEAL_TYPE_CHOICES):
         meals = meals.filter(meal_type=meal_type_filter)
-    
+
     # Get statistics
     total_meals = meals.count()
-    
+
     context = {
         'meals': meals[:50],  # Limit to recent 50 meals
         'total_meals': total_meals,
         'meal_type_filter': meal_type_filter,
         'meal_types': Meal.MEAL_TYPE_CHOICES,
     }
-    
+
     return render(request, 'nutrition/meal_history.html', context)

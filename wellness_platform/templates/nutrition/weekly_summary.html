@@ -14,19 +14,19 @@
                     {{ summary.start_date|date:"M j" }} - {{ summary.end_date|date:"M j, Y" }}
                 </p>
             </div>
-            
+
             <div class="flex items-center space-x-2">
-                <a href="?date={{ prev_week_end|date:'Y-m-d' }}" 
+                <a href="?date={{ prev_week_end|date:'Y-m-d' }}"
                    class="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
                     <svg class="h-5 w-5 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                     </svg>
                 </a>
-                <a href="?date={{ end_date|date:'Y-m-d' }}" 
+                <a href="?date={{ end_date|date:'Y-m-d' }}"
                    class="px-4 py-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300">
                     This Week
                 </a>
-                <a href="?date={{ next_week_end|date:'Y-m-d' }}" 
+                <a href="?date={{ next_week_end|date:'Y-m-d' }}"
                    class="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
                     <svg class="h-5 w-5 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -64,7 +64,7 @@
         <!-- Daily Breakdown -->
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 mb-8">
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Daily Breakdown</h2>
-            
+
             <div class="space-y-4">
                 {% for day in daily_data %}
                 <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
@@ -75,12 +75,12 @@
                             </h3>
                             <p class="text-sm text-gray-600 dark:text-gray-400">{{ day.meal_count }} meals logged</p>
                         </div>
-                        <a href="{% url 'nutrition:daily_summary' %}?date={{ day.date|date:'Y-m-d' }}" 
+                        <a href="{% url 'nutrition:daily_summary' %}?date={{ day.date|date:'Y-m-d' }}"
                            class="text-sm text-blue-600 dark:text-blue-400 hover:underline">
                             View Details →
                         </a>
                     </div>
-                    
+
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                         <div class="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-3">
                             <p class="text-xs text-orange-700 dark:text-orange-300 mb-1">Calories</p>
@@ -107,7 +107,7 @@
         <!-- Meal Type Distribution -->
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Meal Type Distribution</h2>
-            
+
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {% for meal_type, count in summary.meal_type_counts.items %}
                 <div class="text-center p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
@@ -127,11 +127,11 @@
 
         <!-- Navigation Links -->
         <div class="mt-8 flex justify-center space-x-4">
-            <a href="{% url 'nutrition:daily_summary' %}" 
+            <a href="{% url 'nutrition:daily_summary' %}"
                class="px-6 py-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white hover:shadow-md transition">
                 Daily Summary
             </a>
-            <a href="{% url 'nutrition:meal_history' %}" 
+            <a href="{% url 'nutrition:meal_history' %}"
                class="px-6 py-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white hover:shadow-md transition">
                 Meal History
             </a>

@@ -15,7 +15,7 @@
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
             <form method="post" class="space-y-6">
                 {% csrf_token %}
-                
+
                 <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
                     <div class="flex items-start">
                         <svg class="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -47,7 +47,7 @@
                 <!-- Macros Grid -->
                 <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Macronutrients Goals</h3>
-                    
+
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <!-- Protein Goal -->
                         <div>
@@ -86,11 +86,11 @@
 
                 <!-- Form Actions -->
                 <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200 dark:border-gray-700">
-                    <a href="{% url 'nutrition:daily_summary' %}" 
+                    <a href="{% url 'nutrition:daily_summary' %}"
                        class="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-200">
                         Cancel
                     </a>
-                    <button type="submit" 
+                    <button type="submit"
                             class="px-6 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:from-purple-700 hover:to-indigo-700 transition duration-200 shadow-md hover:shadow-lg">
                         {% if goal %}Update Goals{% else %}Set Goals{% endif %}
                     </button>

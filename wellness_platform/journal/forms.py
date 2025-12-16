@@ -4,7 +4,7 @@ from .models import JournalEntry
 
 class JournalEntryForm(forms.ModelForm):
     """Form for creating and editing journal entries"""
-    
+
     class Meta:
         model = JournalEntry
         fields = ['title', 'content']

@@ -6,7 +6,7 @@
 <div class="min-h-screen bg-gradient-to-br from-blue-100 via-indigo-50 to-purple-100 dark:from-gray-900 dark:via-blue-950 dark:to-indigo-950 p-4 sm:p-6 lg:p-8">
     <div class="max-w-4xl mx-auto">
         <!-- Back Button -->
-        <a href="{% if article %}{% url 'blog:article_detail' article.slug %}{% else %}{% url 'blog:article_list' %}{% endif %}" 
+        <a href="{% if article %}{% url 'blog:article_detail' article.slug %}{% else %}{% url 'blog:article_list' %}{% endif %}"
            class="inline-flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 mb-6 transition duration-200">
             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -38,24 +38,24 @@
                         <label for="{{ form.content.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                             Content * (Markdown supported)
                         </label>
-                        <button type="button" 
-                                onclick="togglePreview()" 
+                        <button type="button"
+                                onclick="togglePreview()"
                                 id="preview-toggle"
                                 class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-200 text-sm font-medium">
                             👁️ Preview
                         </button>
                     </div>
-                    
+
                     <!-- Editor Container -->
                     <div id="editor-container">
                         {{ form.content }}
                     </div>
-                    
+
                     <!-- Preview Container -->
                     <div id="preview-container" class="hidden w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 min-h-[400px]">
                         <div id="preview-content" class="prose prose-lg dark:prose-invert max-w-none"></div>
                     </div>
-                    
+
                     {% if form.content.help_text %}
                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ form.content.help_text }}</p>
                     {% endif %}
@@ -133,11 +133,11 @@
 
                 <!-- Submit Buttons -->
                 <div class="flex items-center space-x-4">
-                    <button type="submit" 
+                    <button type="submit"
                             class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition duration-200 shadow-md hover:shadow-lg font-medium">
                         {{ action }} Article
                     </button>
-                    <a href="{% if article %}{% url 'blog:article_detail' article.slug %}{% else %}{% url 'blog:article_list' %}{% endif %}" 
+                    <a href="{% if article %}{% url 'blog:article_detail' article.slug %}{% else %}{% url 'blog:article_list' %}{% endif %}"
                        class="px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-200 font-medium">
                         Cancel
                     </a>
@@ -179,13 +179,13 @@ function togglePreview() {
     const preview = document.getElementById('preview-container');
     const button = document.getElementById('preview-toggle');
     const textarea = document.querySelector('#editor-container textarea');
-    
+
     if (preview.classList.contains('hidden')) {
         // Show preview
         const markdown = textarea.value;
         const html = marked.parse(markdown);
         document.getElementById('preview-content').innerHTML = html;
-        
+
         editor.classList.add('hidden');
         preview.classList.remove('hidden');
         button.textContent = '✏️ Edit';

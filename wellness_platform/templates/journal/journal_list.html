@@ -13,7 +13,7 @@
                 </h1>
                 <p class="text-gray-600 dark:text-gray-400">Your private space for thoughts and reflections</p>
             </div>
-            <a href="{% url 'journal:journal_create' %}" 
+            <a href="{% url 'journal:journal_create' %}"
                class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition shadow-md hover:shadow-lg font-medium">
                 ✍️ New Entry
             </a>
@@ -76,22 +76,22 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <p class="text-gray-600 dark:text-gray-400 line-clamp-3">
                         {{ entry.get_content_preview }}
                     </p>
                 </a>
-                
+
                 <div class="px-6 py-4 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 flex items-center justify-end space-x-2">
-                    <a href="{% url 'journal:journal_detail' entry.pk %}" 
+                    <a href="{% url 'journal:journal_detail' entry.pk %}"
                        class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition">
                         Read
                     </a>
-                    <a href="{% url 'journal:journal_edit' entry.pk %}" 
+                    <a href="{% url 'journal:journal_edit' entry.pk %}"
                        class="px-4 py-2 text-sm text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition">
                         Edit
                     </a>
-                    <a href="{% url 'journal:journal_delete' entry.pk %}" 
+                    <a href="{% url 'journal:journal_delete' entry.pk %}"
                        class="px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition">
                         Delete
                     </a>
@@ -107,7 +107,7 @@
             <p class="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
                 Your journal is empty. Create your first entry to begin documenting your thoughts, feelings, and experiences.
             </p>
-            <a href="{% url 'journal:journal_create' %}" 
+            <a href="{% url 'journal:journal_create' %}"
                class="inline-block px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition shadow-md hover:shadow-lg font-medium text-lg">
                 ✍️ Write Your First Entry
             </a>
