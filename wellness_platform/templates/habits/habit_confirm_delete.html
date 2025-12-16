@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Delete Habit - PulseWell{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 sm:p-6 lg:p-8">
+    <div class="max-w-2xl mx-auto">
+        <!-- Back Button -->
+        <div class="mb-6">
+            <a href="{% url 'habits:habit_detail' habit.pk %}" class="inline-flex items-center text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium">
+                <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Back to Habit
+            </a>
+        </div>
+
+        <!-- Warning Card -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <!-- Alert Header -->
+            <div class="bg-red-50 dark:bg-red-900/20 border-b border-red-200 dark:border-red-800 p-6">
+                <div class="flex items-center">
+                    <svg class="h-8 w-8 text-red-600 dark:text-red-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                    <h1 class="text-2xl font-bold text-red-900 dark:text-red-400">Delete Habit</h1>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="p-8">
+                <p class="text-lg text-gray-700 dark:text-gray-300 mb-6">
+                    Are you sure you want to delete the habit "<strong>{{ habit.name }}</strong>"?
+                </p>
+
+                <!-- Habit Details -->
+                <div class="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-6 mb-6 border border-gray-200 dark:border-gray-700">
+                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Habit Details</h2>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-400">Name:</span>
+                            <span class="font-medium text-gray-900 dark:text-white">{{ habit.name }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-400">Frequency:</span>
+                            <span class="font-medium text-gray-900 dark:text-white">{{ habit.get_frequency_display }}</span>
+                        </div>
+                        {% if habit.category %}
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-400">Category:</span>
+                            <span class="font-medium text-gray-900 dark:text-white">{{ habit.get_category_display }}</span>
+                        </div>
+                        {% endif %}
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-400">Current Streak:</span>
+                            <span class="font-medium text-orange-600 dark:text-orange-400">{{ habit.current_streak }} days</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-400">Total Completions:</span>
+                            <span class="font-medium text-indigo-600 dark:text-indigo-400">{{ habit.total_completions }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Warning Message -->
+                <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mb-6">
+                    <div class="flex">
+                        <svg class="h-5 w-5 text-yellow-600 dark:text-yellow-400 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                        </svg>
+                        <div class="text-sm text-yellow-800 dark:text-yellow-400">
+                            <p class="font-semibold mb-1">This action cannot be undone!</p>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>All completion history will be permanently deleted</li>
+                                <li>Your streak data will be lost</li>
+                                <li>This habit cannot be recovered</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <form method="post" class="flex items-center justify-between">
+                    {% csrf_token %}
+                    <a href="{% url 'habits:habit_detail' habit.pk %}" class="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-200">
+                        Cancel
+                    </a>
+                    <button type="submit" class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition duration-200 flex items-center space-x-2">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                        <span>Yes, Delete Habit</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

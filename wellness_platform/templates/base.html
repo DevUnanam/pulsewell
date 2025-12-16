@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,41 +10,146 @@
     <link href="{% static 'css/output.css' %}" rel="stylesheet">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💜</text></svg>">
+    <link rel="icon" type="image/svg+xml"
+          href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💜</text></svg>">
 
-    <!-- Theme Script -->
+    <!-- Theme bootstrap -->
     <script>
-        // Check for saved theme preference or default to 'light'
-        const theme = localStorage.getItem('theme') || 'light';
-        if (theme === 'dark') {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
             document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
         }
     </script>
 
     {% block extra_css %}{% endblock %}
 </head>
+
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 antialiased">
+
+{% if user.is_authenticated %}
+
+<!-- ================= NAVBAR ================= -->
+<nav class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
+    <div class="px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+
+            <div class="flex items-center">
+                <!-- Mobile sidebar toggle -->
+                <button onclick="toggleSidebar()"
+                        class="lg:hidden mr-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+
+                <a href="{% url 'dashboard:dashboard' %}" class="flex items-center gap-3">
+                    <div class="h-9 w-9 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 flex items-center justify-center">
+                        <span class="text-white font-bold">PW</span>
+                    </div>
+                    <span class="text-lg font-bold">PulseWell</span>
+                </a>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <a href="{% url 'profiles:profile_view' %}"
+                   class="hidden sm:block text-sm hover:text-indigo-600">
+                    Profile
+                </a>
+
+                <button onclick="toggleTheme()"
+                        class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700">
+                    🌙
+                </button>
+
+                <a href="{% url 'account:logout' %}"
+                   class="px-4 py-2 text-sm text-white bg-red-600 rounded-lg hover:bg-red-700">
+                    Logout
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="flex">
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside id="sidebar"
+           class="fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700
+                  transform -translate-x-full lg:translate-x-0 transition-transform duration-300 mt-16 overflow-y-auto">
+
+        <nav class="p-4 space-y-1">
+
+            <a href="{% url 'dashboard:dashboard' %}"
+               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                Dashboard
+            </a>
+
+            <a href="{% url 'challenges:explore' %}"
+               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                Challenges
+            </a>
+
+            <a href="{% url 'challenges:my_challenges' %}"
+               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                My Challenges
+            </a>
+
+            <a href="{% url 'habits:habit_list' %}"
+               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                Habits
+            </a>
+
+            <a href="{% url 'mood:mood_history' %}"
+               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                Mood Tracker
+            </a>
+
+            <div class="border-t my-3 dark:border-gray-700"></div>
+
+            <a href="{% url 'profiles:profile_view' %}"
+               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                Profile
+            </a>
+
+        </nav>
+    </aside>
+
+    <!-- Overlay -->
+    <div id="sidebar-overlay"
+         class="fixed inset-0 bg-black bg-opacity-50 hidden lg:hidden z-30"
+         onclick="toggleSidebar()"></div>
+
+{% endif %}
+
+<!-- ================= MAIN CONTENT ================= -->
+<main class="{% if user.is_authenticated %}flex-1 lg:ml-64{% endif %} p-4">
     {% block content %}{% endblock %}
+</main>
 
-    <!-- Theme Toggle Script -->
-    <script>
-        function toggleTheme() {
-            const html = document.documentElement;
-            const currentTheme = html.classList.contains('dark') ? 'dark' : 'light';
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+<!-- ================= SCRIPTS ================= -->
+<script>
+    function toggleTheme() {
+        const html = document.documentElement;
+        const isDark = html.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    }
 
-            if (newTheme === 'dark') {
-                html.classList.add('dark');
-            } else {
-                html.classList.remove('dark');
-            }
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        sidebar.classList.toggle('-translate-x-full');
+        overlay.classList.toggle('hidden');
+    }
 
-            localStorage.setItem('theme', newTheme);
+    window.addEventListener('resize', () => {
+        if (window.innerWidth >= 1024) {
+            document.getElementById('sidebar')?.classList.remove('-translate-x-full');
+            document.getElementById('sidebar-overlay')?.classList.add('hidden');
         }
-    </script>
+    });
+</script>
 
-    {% block extra_js %}{% endblock %}
+{% block extra_js %}{% endblock %}
 </body>
 </html>

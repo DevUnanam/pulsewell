@@ -23,6 +23,9 @@ urlpatterns = [
     path('account/', include('account.urls')),
     path('dashboard/', include('dashboard.urls')),
     path('profile/', include('profiles.urls')),
+    path('challenges/', include('challenges.urls')),
+    path('habits/', include('habits.urls')),
+    path('mood/', include('mood.urls')),
     path('', lambda request: redirect('account:login')),
 ]
 

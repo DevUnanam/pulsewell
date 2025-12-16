@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
+from datetime import date
 
 
 def is_admin_user(user):
@@ -19,8 +20,28 @@ def user_dashboard_view(request):
     """
     Display the main dashboard for regular users only
     """
+    # Import models here to avoid circular imports
+    from habits.models import Habit
+    from mood.models import MoodEntry
+    
+    # Get habits data
+    active_habits = request.user.habits.filter(is_active=True)
+    habits_completed_today = sum(1 for habit in active_habits if habit.is_completed_today())
+    total_active_habits = active_habits.count()
+    
+    # Calculate current streak (sum of all active habit streaks)
+    current_streak = sum(habit.current_streak for habit in active_habits)
+    
+    # Get today's mood
+    today_mood = MoodEntry.get_today_mood(request.user)
+    
     context = {
         'user': request.user,
+        'habits_completed_today': habits_completed_today,
+        'total_active_habits': total_active_habits,
+        'current_streak': current_streak,
+        'today_mood': today_mood,
+        'has_logged_mood_today': today_mood is not None,
     }
     return render(request, 'dashboard/user_dashboard.html', context)
 

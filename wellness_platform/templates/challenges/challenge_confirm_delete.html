@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Delete Challenge - {{ challenge.title }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-100 via-purple-50 to-pink-100 dark:from-gray-900 dark:via-blue-950 dark:to-purple-950 py-8 flex items-center justify-center">
+    <div class="max-w-2xl w-full mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Confirmation Card -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden border border-red-300 dark:border-red-700">
+            <!-- Warning Header -->
+            <div class="bg-gradient-to-r from-red-600 to-red-700 p-8 text-center">
+                <div class="text-6xl mb-4">⚠️</div>
+                <h1 class="text-3xl font-bold text-white mb-2">Delete Challenge</h1>
+                <p class="text-red-100">This action cannot be undone</p>
+            </div>
+
+            <div class="p-8">
+                <!-- Challenge Info -->
+                <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 mb-6 border border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <span class="text-5xl mr-4">{{ challenge.badge_icon|default:"🎯" }}</span>
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">{{ challenge.title }}</h2>
+                            <p class="text-gray-600 dark:text-gray-400">{{ challenge.short_description }}</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <div class="text-center">
+                            <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">Participants</div>
+                            <div class="text-lg font-bold text-gray-900 dark:text-white">{{ challenge.get_participant_count }}</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">Duration</div>
+                            <div class="text-lg font-bold text-gray-900 dark:text-white">{{ challenge.duration_days }} days</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">Points</div>
+                            <div class="text-lg font-bold text-gray-900 dark:text-white">{{ challenge.points_reward }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Warning Message -->
+                <div class="bg-red-50 dark:bg-red-900/20 border border-red-300 dark:border-red-800 rounded-xl p-6 mb-6">
+                    <div class="flex items-start">
+                        <svg class="h-6 w-6 text-red-600 dark:text-red-400 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                        </svg>
+                        <div>
+                            <h3 class="text-lg font-bold text-red-800 dark:text-red-300 mb-2">Warning!</h3>
+                            <ul class="text-sm text-red-700 dark:text-red-400 space-y-1 list-disc list-inside">
+                                <li>This challenge will be permanently deleted</li>
+                                <li>All participant progress will be removed</li>
+                                <li>All check-ins and badges will be lost</li>
+                                <li>This action cannot be reversed</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Confirmation Form -->
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-300 dark:border-yellow-800 rounded-xl p-4 mb-6">
+                        <p class="text-sm text-yellow-800 dark:text-yellow-300 font-semibold">
+                            Are you absolutely sure you want to delete "{{ challenge.title }}"?
+                        </p>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button type="submit" class="flex-1 px-8 py-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition duration-200 transform hover:scale-105 shadow-lg flex items-center justify-center">
+                            <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                            Yes, Delete Challenge
+                        </button>
+
+                        <a href="{% url 'challenges:detail' slug=challenge.slug %}" class="flex-1 px-8 py-4 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold rounded-xl hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-200 text-center flex items-center justify-center">
+                            <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            No, Keep Challenge
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

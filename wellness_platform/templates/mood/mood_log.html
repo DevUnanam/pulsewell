@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Log Mood - PulseWell{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 sm:p-6 lg:p-8">
+    <div class="max-w-3xl mx-auto">
+        <!-- Back Button -->
+        <div class="mb-6">
+            <a href="{% url 'mood:mood_history' %}" class="inline-flex items-center text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium">
+                <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Back to History
+            </a>
+        </div>
+
+        <!-- Form Card -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-8 border border-gray-200 dark:border-gray-700">
+            <div class="mb-6">
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                    {% if existing_entry %}Update Your Mood{% else %}Log Your Mood{% endif %}
+                </h1>
+                <p class="text-gray-600 dark:text-gray-400">{{ today|date:"F d, Y" }}</p>
+            </div>
+
+            {% if existing_entry %}
+            <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+                <div class="flex">
+                    <svg class="h-5 w-5 text-blue-400 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                    </svg>
+                    <p class="text-sm text-blue-800 dark:text-blue-400">
+                        You've already logged your mood today. You can update it below.
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+
+            <form method="post" class="space-y-8">
+                {% csrf_token %}
+                
+                <!-- Mood Selection -->
+                <div>
+                    <label class="block text-lg font-medium text-gray-700 dark:text-gray-300 mb-4">
+                        {{ form.mood.label }}
+                    </label>
+                    
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        {% for value, label in form.mood.field.choices %}
+                        <label class="relative cursor-pointer">
+                            <input type="radio" name="mood" value="{{ value }}" 
+                                   {% if form.mood.value == value %}checked{% endif %}
+                                   class="peer sr-only">
+                            <div class="p-6 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-center transition-all duration-200 
+                                        hover:border-indigo-500 hover:shadow-md
+                                        peer-checked:border-indigo-600 peer-checked:bg-indigo-50 dark:peer-checked:bg-indigo-900/30 peer-checked:shadow-lg
+                                        dark:bg-gray-700">
+                                <div class="text-4xl mb-2">{{ label|slice:":2" }}</div>
+                                <div class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ label|slice:"3:" }}</div>
+                            </div>
+                        </label>
+                        {% endfor %}
+                    </div>
+                    
+                    {% if form.mood.errors %}
+                    <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ form.mood.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Note -->
+                <div>
+                    <label for="{{ form.note.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {{ form.note.label }}
+                    </label>
+                    {{ form.note }}
+                    {% if form.note.errors %}
+                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.note.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Submit Buttons -->
+                <div class="flex items-center justify-between pt-6 border-t border-gray-200 dark:border-gray-700">
+                    <a href="{% url 'mood:mood_history' %}" class="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-200">
+                        Cancel
+                    </a>
+                    <button type="submit" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition duration-200 flex items-center space-x-2">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        <span>{% if existing_entry %}Update Mood{% else %}Save Mood{% endif %}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

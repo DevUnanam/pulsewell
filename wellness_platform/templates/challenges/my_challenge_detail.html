@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ user_challenge.challenge.title }} - My Progress{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-100 via-purple-50 to-pink-100 dark:from-gray-900 dark:via-blue-950 dark:to-purple-950 py-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Back Button -->
+        <a href="{% url 'challenges:my_challenges' %}" class="inline-flex items-center text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 mb-6">
+            <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+            Back to My Challenges
+        </a>
+
+        <!-- Header Card -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-700 mb-8">
+            <div class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 p-8">
+                <div class="flex items-center justify-between">
+                    <div class="text-white">
+                        <h1 class="text-4xl font-bold mb-2">{{ user_challenge.challenge.title }}</h1>
+                        <p class="text-indigo-100 text-lg">{{ user_challenge.challenge.short_description }}</p>
+                    </div>
+                    <span class="text-7xl">{{ user_challenge.challenge.badge_icon|default:"🎯" }}</span>
+                </div>
+            </div>
+
+            <div class="p-8">
+                <!-- Progress Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-indigo-600 dark:text-indigo-400 mb-1">{{ user_challenge.days_completed }}</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400">Days Completed</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-purple-600 dark:text-purple-400 mb-1">{{ user_challenge.current_streak }}</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400">Current Streak 🔥</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-pink-600 dark:text-pink-400 mb-1">{{ user_challenge.longest_streak }}</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400">Longest Streak</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-green-600 dark:text-green-400 mb-1">{{ user_challenge.points_earned }}</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400">Points Earned ⭐</div>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="mb-8">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">Overall Progress</h3>
+                        <span class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{{ user_challenge.completion_percentage|floatformat:0 }}%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-6 overflow-hidden">
+                        <div class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 h-full rounded-full transition-all duration-500 flex items-center justify-end pr-3" style="width: {{ user_challenge.completion_percentage }}%">
+                            {% if user_challenge.completion_percentage >= 10 %}
+                            <span class="text-xs font-bold text-white">{{ user_challenge.completion_percentage|floatformat:0 }}%</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="flex justify-between text-xs text-gray-600 dark:text-gray-400 mt-2">
+                        <span>Day {{ user_challenge.days_completed }}</span>
+                        <span>Day {{ user_challenge.challenge.duration_days }}</span>
+                    </div>
+                </div>
+
+                <!-- Daily Requirement -->
+                <div class="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl p-6 mb-8 border border-indigo-200 dark:border-indigo-800">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">📋 Daily Requirement</h3>
+                    <p class="text-gray-700 dark:text-gray-300">{{ user_challenge.challenge.daily_requirement }}</p>
+                </div>
+
+                <!-- Check-in Button -->
+                {% if can_checkin %}
+                <a href="{% url 'challenges:checkin' pk=user_challenge.pk %}" class="block w-full text-center px-8 py-4 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold rounded-xl transition duration-200 transform hover:scale-105 shadow-lg mb-8">
+                    ✓ Complete Today's Challenge
+                </a>
+                {% else %}
+                <div class="block w-full text-center px-8 py-4 bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 font-bold rounded-xl mb-8">
+                    ✓ Already Checked In Today
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- 30-Day Calendar -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 border border-gray-200 dark:border-gray-700">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                <svg class="h-7 w-7 mr-3 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                30-Day Progress Calendar
+            </h2>
+
+            <div class="grid grid-cols-5 md:grid-cols-10 gap-3">
+                {% for day in calendar_data %}
+                <div class="relative group">
+                    <div class="aspect-square rounded-lg border-2 flex flex-col items-center justify-center transition-all duration-200 {% if day.completed %}border-green-500 bg-green-50 dark:bg-green-900/30{% elif day.is_today %}border-indigo-500 bg-indigo-50 dark:bg-indigo-900/30{% elif day.is_future %}border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/30{% else %}border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/30{% endif %} hover:scale-110 cursor-pointer">
+                        <div class="text-xs font-semibold {% if day.completed %}text-green-700 dark:text-green-300{% elif day.is_today %}text-indigo-700 dark:text-indigo-300{% elif day.is_future %}text-gray-400 dark:text-gray-500{% else %}text-red-700 dark:text-red-300{% endif %}">
+                            {{ day.day }}
+                        </div>
+                        <div class="text-2xl">
+                            {% if day.completed %}✓{% elif day.is_today %}📍{% elif day.is_future %}⏳{% else %}✗{% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Tooltip -->
+                    {% if day.checkin %}
+                    <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block z-10">
+                        <div class="bg-gray-900 dark:bg-gray-700 text-white text-xs rounded-lg py-2 px-3 whitespace-nowrap shadow-xl">
+                            <div class="font-semibold mb-1">{{ day.date|date:"M d" }}</div>
+                            {% if day.checkin.mood %}
+                            <div>Mood: {{ day.checkin.get_mood_display }}</div>
+                            {% endif %}
+                            {% if day.checkin.value_logged %}
+                            <div>Value: {{ day.checkin.value_logged }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Calendar Legend -->
+            <div class="flex flex-wrap justify-center gap-6 mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg border-2 border-green-500 bg-green-50 dark:bg-green-900/30 flex items-center justify-center text-green-700 dark:text-green-300">✓</div>
+                    <span class="text-sm text-gray-600 dark:text-gray-400">Completed</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg border-2 border-indigo-500 bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center">📍</div>
+                    <span class="text-sm text-gray-600 dark:text-gray-400">Today</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg border-2 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/30 flex items-center justify-center text-gray-400 dark:text-gray-500">⏳</div>
+                    <span class="text-sm text-gray-600 dark:text-gray-400">Upcoming</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg border-2 border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/30 flex items-center justify-center text-red-700 dark:text-red-300">✗</div>
+                    <span class="text-sm text-gray-600 dark:text-gray-400">Missed</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
