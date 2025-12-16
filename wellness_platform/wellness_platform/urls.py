@@ -22,5 +22,13 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/', include('account.urls')),
     path('dashboard/', include('dashboard.urls')),
+    path('profile/', include('profiles.urls')),
     path('', lambda request: redirect('account:login')),
 ]
+
+# Media files configuration (for profile pictures)
+from django.conf import settings
+from django.conf.urls.static import static
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

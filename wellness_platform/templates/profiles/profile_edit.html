@@ -1,0 +1,407 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Edit Profile - PulseWell{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 dark:from-gray-900 dark:via-indigo-950 dark:to-purple-950">
+    <!-- Navigation Bar -->
+    <nav class="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <a href="{% url 'dashboard:dashboard' %}" class="flex items-center">
+                            <div class="h-10 w-10 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full flex items-center justify-center">
+                                <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                </svg>
+                            </div>
+                            <span class="ml-3 text-xl font-bold text-gray-900 dark:text-white">PulseWell</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="{% url 'profiles:profile_view' %}" class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium transition duration-200">
+                        View Profile
+                    </a>
+                    <button onclick="toggleTheme()" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition duration-200">
+                        <svg class="h-5 w-5 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                    </button>
+                    <a href="{% url 'account:logout' %}" class="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition duration-200">
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold text-gray-900 dark:text-white flex items-center">
+                <svg class="h-10 w-10 text-indigo-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                </svg>
+                Edit Profile
+            </h1>
+            <p class="text-gray-600 dark:text-gray-400 mt-2">Update your personal information and health metrics</p>
+        </div>
+
+        <!-- Messages -->
+        {% if messages %}
+            <div class="mb-6 space-y-2">
+                {% for message in messages %}
+                    <div class="{% if message.tags == 'error' %}bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 text-red-800 dark:text-red-300{% elif message.tags == 'success' %}bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500 text-green-800 dark:text-green-300{% else %}bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 text-blue-800 dark:text-blue-300{% endif %} p-4 rounded-md shadow-sm">
+                        <p class="text-sm font-medium">{{ message }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Form Errors Display -->
+        {% if user_form.errors or profile_form.errors %}
+            <div class="mb-6 bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-4 rounded-md shadow-sm">
+                <h3 class="text-lg font-semibold text-red-800 dark:text-red-300 mb-2">Please correct the following errors:</h3>
+                <ul class="list-disc list-inside space-y-1 text-sm text-red-700 dark:text-red-400">
+                    {% for field, errors in user_form.errors.items %}
+                        {% for error in errors %}
+                            <li><strong>{{ field|title }}:</strong> {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for field, errors in profile_form.errors.items %}
+                        {% for error in errors %}
+                            <li><strong>{{ field|capfirst }}:</strong> {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <!-- Edit Form -->
+        <form method="post" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+
+            <!-- Account Information -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                    <svg class="h-6 w-6 text-indigo-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                    Account Information
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        {{ user_form.email.label_tag }}
+                        {{ user_form.email }}
+                        {% if user_form.email.errors %}
+                            <p class="text-sm text-red-600 dark:text-red-400 mt-1">{{ user_form.email.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        {{ user_form.first_name.label_tag }}
+                        {{ user_form.first_name }}
+                        {% if user_form.first_name.errors %}
+                            <p class="text-sm text-red-600 dark:text-red-400 mt-1">{{ user_form.first_name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="md:col-span-2">
+                        {{ user_form.last_name.label_tag }}
+                        {{ user_form.last_name }}
+                        {% if user_form.last_name.errors %}
+                            <p class="text-sm text-red-600 dark:text-red-400 mt-1">{{ user_form.last_name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Picture -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                    <svg class="h-6 w-6 text-purple-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    Profile Picture
+                </h2>
+                <div class="flex items-center space-x-6">
+                    <div class="shrink-0">
+                        {% if profile_form.instance.profile_picture %}
+                            <img src="{{ profile_form.instance.profile_picture.url }}" alt="Current profile" class="h-24 w-24 rounded-full object-cover border-4 border-indigo-200 dark:border-indigo-800">
+                        {% else %}
+                            <div class="h-24 w-24 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 flex items-center justify-center">
+                                <span class="text-4xl font-bold text-white">{{ user.username|first|upper }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="flex-1">
+                        {{ profile_form.profile_picture }}
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">JPG, PNG or GIF. Max size 5MB.</p>
+                        {% if profile_form.profile_picture.errors %}
+                            <p class="text-sm text-red-600 dark:text-red-400 mt-1">{{ profile_form.profile_picture.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Personal Details -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                    <svg class="h-6 w-6 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    Personal Details
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        {{ profile_form.phone_number.label_tag }}
+                        {{ profile_form.phone_number }}
+                        {% if profile_form.phone_number.errors %}
+                            <p class="text-sm text-red-600 dark:text-red-400 mt-1">{{ profile_form.phone_number.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        {{ profile_form.date_of_birth.label_tag }}
+                        {{ profile_form.date_of_birth }}
+                        {% if profile_form.date_of_birth.errors %}
+                            <p class="text-sm text-red-600 dark:text-red-400 mt-1">{{ profile_form.date_of_birth.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="md:col-span-2">
+                        {{ profile_form.gender.label_tag }}
+                        {{ profile_form.gender }}
+                        {% if profile_form.gender.errors %}
+                            <p class="text-sm text-red-600 dark:text-red-400 mt-1">{{ profile_form.gender.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="md:col-span-2">
+                        {{ profile_form.bio.label_tag }}
+                        {{ profile_form.bio }}
+                        {% if profile_form.bio.errors %}
+                            <p class="text-sm text-red-600 dark:text-red-400 mt-1">{{ profile_form.bio.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Address Information -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                    <svg class="h-6 w-6 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    Address
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="md:col-span-2">
+                        {{ profile_form.address_line1.label_tag }}
+                        {{ profile_form.address_line1 }}
+                        {% if profile_form.address_line1.errors %}
+                            <p class="text-sm text-red-600 dark:text-red-400 mt-1">{{ profile_form.address_line1.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="md:col-span-2">
+                        {{ profile_form.address_line2.label_tag }}
+                        {{ profile_form.address_line2 }}
+                        {% if profile_form.address_line2.errors %}
+                            <p class="text-sm text-red-600 dark:text-red-400 mt-1">{{ profile_form.address_line2.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        {{ profile_form.city.label_tag }}
+                        {{ profile_form.city }}
+                        {% if profile_form.city.errors %}
+                            <p class="text-sm text-red-600 dark:text-red-400 mt-1">{{ profile_form.city.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        {{ profile_form.state.label_tag }}
+                        {{ profile_form.state }}
+                        {% if profile_form.state.errors %}
+                            <p class="text-sm text-red-600 dark:text-red-400 mt-1">{{ profile_form.state.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        {{ profile_form.postal_code.label_tag }}
+                        {{ profile_form.postal_code }}
+                        {% if profile_form.postal_code.errors %}
+                            <p class="text-sm text-red-600 dark:text-red-400 mt-1">{{ profile_form.postal_code.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        {{ profile_form.country.label_tag }}
+                        {{ profile_form.country }}
+                        {% if profile_form.country.errors %}
+                            <p class="text-sm text-red-600 dark:text-red-400 mt-1">{{ profile_form.country.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Health Metrics -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                    <svg class="h-6 w-6 text-pink-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    </svg>
+                    Health Metrics
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        {{ profile_form.height.label_tag }}
+                        {{ profile_form.height }}
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Enter height in feet (e.g., 5.8 for 5'8")</p>
+                        {% if profile_form.height.errors %}
+                            <p class="text-sm text-red-600 dark:text-red-400 mt-1">{{ profile_form.height.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        {{ profile_form.weight.label_tag }}
+                        {{ profile_form.weight }}
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Enter weight in kilograms</p>
+                        {% if profile_form.weight.errors %}
+                            <p class="text-sm text-red-600 dark:text-red-400 mt-1">{{ profile_form.weight.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- BMI Display -->
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-lg p-4 border border-purple-200 dark:border-purple-800">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Body Mass Index (BMI)</label>
+                        <div class="flex items-center justify-between">
+                            <span id="bmi-value" class="text-3xl font-bold text-purple-600 dark:text-purple-400">--</span>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-indigo-900/20 dark:to-blue-900/20 rounded-lg p-4 border border-indigo-200 dark:border-indigo-800">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">BMI Category</label>
+                        <div class="flex items-center justify-between">
+                            <span id="bmi-category" class="text-lg font-semibold text-indigo-600 dark:text-indigo-400">--</span>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                function calculateBMI() {
+                    const heightFt = parseFloat(document.getElementById('id_height').value);
+                    const weightKg = parseFloat(document.getElementById('id_weight').value);
+
+                    if (heightFt && weightKg && heightFt > 0 && weightKg > 0) {
+                        // Convert feet to meters (1 foot = 0.3048 meters)
+                        const heightM = heightFt * 0.3048;
+
+                        // Calculate BMI = weight(kg) / (height(m))^2
+                        const bmi = weightKg / (heightM * heightM);
+                        const bmiRounded = bmi.toFixed(2);
+
+                        // Update BMI value
+                        document.getElementById('bmi-value').textContent = bmiRounded;
+
+                        // Determine BMI category
+                        let category = '';
+                        let categoryColor = '';
+
+                        if (bmi < 18.5) {
+                            category = 'UNDERWEIGHT';
+                            categoryColor = 'text-yellow-600 dark:text-yellow-400';
+                        } else if (bmi >= 18.5 && bmi < 25) {
+                            category = 'HEALTHY WEIGHT';
+                            categoryColor = 'text-green-600 dark:text-green-400';
+                        } else if (bmi >= 25 && bmi < 30) {
+                            category = 'OVERWEIGHT';
+                            categoryColor = 'text-orange-600 dark:text-orange-400';
+                        } else {
+                            category = 'OBESE';
+                            categoryColor = 'text-red-600 dark:text-red-400';
+                        }
+
+                        // Update category with color
+                        const categoryElement = document.getElementById('bmi-category');
+                        categoryElement.textContent = category;
+                        categoryElement.className = 'text-lg font-semibold ' + categoryColor;
+                    } else {
+                        document.getElementById('bmi-value').textContent = '--';
+                        document.getElementById('bmi-category').textContent = '--';
+                        document.getElementById('bmi-category').className = 'text-lg font-semibold text-indigo-600 dark:text-indigo-400';
+                    }
+                }
+
+                // Calculate BMI on page load if values exist
+                window.addEventListener('DOMContentLoaded', function() {
+                    calculateBMI();
+                });
+                </script>
+
+                <div class="grid grid-cols-1 gap-6 mt-6">
+                    <div class="md:col-span-3">
+                        {{ profile_form.wellness_goals.label_tag }}
+                        {{ profile_form.wellness_goals }}
+                        {% if profile_form.wellness_goals.errors %}
+                            <p class="text-sm text-red-600 dark:text-red-400 mt-1">{{ profile_form.wellness_goals.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="md:col-span-3">
+                        {{ profile_form.medical_conditions.label_tag }}
+                        {{ profile_form.medical_conditions }}
+                        {% if profile_form.medical_conditions.errors %}
+                            <p class="text-sm text-red-600 dark:text-red-400 mt-1">{{ profile_form.medical_conditions.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="md:col-span-3">
+                        {{ profile_form.allergies.label_tag }}
+                        {{ profile_form.allergies }}
+                        {% if profile_form.allergies.errors %}
+                            <p class="text-sm text-red-600 dark:text-red-400 mt-1">{{ profile_form.allergies.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Privacy Settings -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                    <svg class="h-6 w-6 text-yellow-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                    Privacy Settings
+                </h2>
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <div class="flex items-center h-5">
+                            {{ profile_form.profile_visibility }}
+                        </div>
+                        <div class="ml-3">
+                            <label for="{{ profile_form.profile_visibility.id_for_label }}" class="font-medium text-gray-900 dark:text-white">
+                                {{ profile_form.profile_visibility.label }}
+                            </label>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Allow others to see your profile information</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="flex items-center h-5">
+                            {{ profile_form.show_email }}
+                        </div>
+                        <div class="ml-3">
+                            <label for="{{ profile_form.show_email.id_for_label }}" class="font-medium text-gray-900 dark:text-white">
+                                {{ profile_form.show_email.label }}
+                            </label>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Display your email address on your public profile</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center justify-between bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+                <a href="{% url 'profiles:profile_view' %}" class="px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 font-semibold rounded-lg transition duration-200 border border-gray-300 dark:border-gray-600">
+                    Cancel
+                </a>
+                <button type="submit" class="px-8 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold rounded-lg shadow-lg transition duration-200 transform hover:scale-105">
+                    Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
