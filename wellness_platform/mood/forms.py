@@ -4,7 +4,7 @@ from .models import MoodEntry
 
 class MoodEntryForm(forms.ModelForm):
     """Form for creating and editing mood entries"""
-    
+
     class Meta:
         model = MoodEntry
         fields = ['mood', 'note']

@@ -51,7 +51,7 @@
                             <div class="text-5xl flex-shrink-0">
                                 {{ entry.get_mood_emoji }}
                             </div>
-                            
+
                             <!-- Content -->
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center space-x-3 mb-2">
@@ -67,7 +67,7 @@
                                     </span>
                                     {% endif %}
                                 </div>
-                                
+
                                 {% if entry.note %}
                                 <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
                                     {{ entry.note }}
@@ -77,13 +77,13 @@
                                     No note added
                                 </p>
                                 {% endif %}
-                                
+
                                 <p class="text-sm text-gray-500 dark:text-gray-500 mt-2">
                                     Logged at {{ entry.created_at|date:"g:i A" }}
                                 </p>
                             </div>
                         </div>
-                        
+
                         <!-- Actions -->
                         <div class="flex items-center space-x-2 ml-4">
                             {% if entry.entry_date == today %}

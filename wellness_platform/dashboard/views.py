@@ -23,18 +23,18 @@ def user_dashboard_view(request):
     # Import models here to avoid circular imports
     from habits.models import Habit
     from mood.models import MoodEntry
-    
+
     # Get habits data
     active_habits = request.user.habits.filter(is_active=True)
     habits_completed_today = sum(1 for habit in active_habits if habit.is_completed_today())
     total_active_habits = active_habits.count()
-    
+
     # Calculate current streak (sum of all active habit streaks)
     current_streak = sum(habit.current_streak for habit in active_habits)
-    
+
     # Get today's mood
     today_mood = MoodEntry.get_today_mood(request.user)
-    
+
     context = {
         'user': request.user,
         'habits_completed_today': habits_completed_today,

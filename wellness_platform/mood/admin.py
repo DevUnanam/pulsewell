@@ -9,7 +9,7 @@ class MoodEntryAdmin(admin.ModelAdmin):
     search_fields = ['user__username', 'note']
     date_hierarchy = 'entry_date'
     readonly_fields = ['created_at', 'updated_at']
-    
+
     fieldsets = (
         ('Entry Information', {
             'fields': ('user', 'mood', 'entry_date')
@@ -22,6 +22,6 @@ class MoodEntryAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
-    
+
     def get_queryset(self, request):
         return super().get_queryset(request).select_related('user')

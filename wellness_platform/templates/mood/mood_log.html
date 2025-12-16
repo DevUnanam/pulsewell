@@ -40,20 +40,20 @@
 
             <form method="post" class="space-y-8">
                 {% csrf_token %}
-                
+
                 <!-- Mood Selection -->
                 <div>
                     <label class="block text-lg font-medium text-gray-700 dark:text-gray-300 mb-4">
                         {{ form.mood.label }}
                     </label>
-                    
+
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                         {% for value, label in form.mood.field.choices %}
                         <label class="relative cursor-pointer">
-                            <input type="radio" name="mood" value="{{ value }}" 
+                            <input type="radio" name="mood" value="{{ value }}"
                                    {% if form.mood.value == value %}checked{% endif %}
                                    class="peer sr-only">
-                            <div class="p-6 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-center transition-all duration-200 
+                            <div class="p-6 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-center transition-all duration-200
                                         hover:border-indigo-500 hover:shadow-md
                                         peer-checked:border-indigo-600 peer-checked:bg-indigo-50 dark:peer-checked:bg-indigo-900/30 peer-checked:shadow-lg
                                         dark:bg-gray-700">
@@ -63,7 +63,7 @@
                         </label>
                         {% endfor %}
                     </div>
-                    
+
                     {% if form.mood.errors %}
                     <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ form.mood.errors.0 }}</p>
                     {% endif %}

@@ -10,10 +10,10 @@ from .forms import MoodEntryForm
 def mood_log(request):
     """Log today's mood"""
     today = date.today()
-    
+
     # Check if mood already logged today
     existing_entry = MoodEntry.get_today_mood(request.user)
-    
+
     if request.method == 'POST':
         if existing_entry:
             form = MoodEntryForm(request.POST, instance=existing_entry)
@@ -21,7 +21,7 @@ def mood_log(request):
         else:
             form = MoodEntryForm(request.POST)
             action = 'logged'
-        
+
         if form.is_valid():
             mood_entry = form.save(commit=False)
             mood_entry.user = request.user
@@ -31,7 +31,7 @@ def mood_log(request):
             return redirect('mood:mood_history')
     else:
         form = MoodEntryForm(instance=existing_entry) if existing_entry else MoodEntryForm()
-    
+
     context = {
         'form': form,
         'existing_entry': existing_entry,
@@ -44,7 +44,7 @@ def mood_log(request):
 def mood_history(request):
     """View mood history"""
     mood_entries = request.user.mood_entries.all()
-    
+
     context = {
         'mood_entries': mood_entries,
         'total_entries': mood_entries.count(),
@@ -57,7 +57,7 @@ def mood_history(request):
 def mood_detail(request, pk):
     """View a specific mood entry"""
     mood_entry = get_object_or_404(MoodEntry, pk=pk, user=request.user)
-    
+
     context = {
         'mood_entry': mood_entry,
     }
@@ -68,13 +68,13 @@ def mood_detail(request, pk):
 def mood_delete(request, pk):
     """Delete a mood entry"""
     mood_entry = get_object_or_404(MoodEntry, pk=pk, user=request.user)
-    
+
     if request.method == 'POST':
         entry_date = mood_entry.entry_date
         mood_entry.delete()
         messages.success(request, f'Mood entry for {entry_date} deleted successfully!')
         return redirect('mood:mood_history')
-    
+
     context = {
         'mood_entry': mood_entry,
     }
