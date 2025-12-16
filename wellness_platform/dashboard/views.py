@@ -34,15 +34,15 @@ def admin_dashboard_view(request):
     if not (request.user.is_superuser or request.user.is_admin):
         messages.error(request, 'You do not have permission to access the admin dashboard.')
         return redirect('dashboard:user_dashboard')
-    
+
     # Get statistics for admin view
     from django.contrib.auth import get_user_model
     User = get_user_model()
-    
+
     total_users = User.objects.count()
     admin_users = User.objects.filter(is_admin=True).count()
     regular_users = User.objects.filter(is_user=True, is_admin=False, is_superuser=False).count()
-    
+
     context = {
         'user': request.user,
         'total_users': total_users,

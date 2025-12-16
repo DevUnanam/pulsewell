@@ -200,8 +200,8 @@ User = get_user_model()
 total_users = User.objects.count()
 admin_users = User.objects.filter(is_admin=True).count()
 regular_users = User.objects.filter(
-    is_user=True, 
-    is_admin=False, 
+    is_user=True,
+    is_admin=False,
     is_superuser=False
 ).count()
 ```

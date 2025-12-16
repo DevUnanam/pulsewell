@@ -52,12 +52,12 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f'Welcome back, {username}!')
-                
+
                 # Check if there's a next parameter, otherwise use role-based redirect
                 next_url = request.GET.get('next')
                 if next_url:
                     return redirect(next_url)
-                
+
                 return redirect(_get_redirect_url_for_user(user))
         else:
             messages.error(request, 'Invalid username or password.')
