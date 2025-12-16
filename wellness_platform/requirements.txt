@@ -1,0 +1,24 @@
+# PulseWell - Wellness Platform Requirements
+
+# Core Framework
+Django>=5.0,<6.0
+
+# Optional but recommended for production
+# Database
+# psycopg2-binary>=2.9  # PostgreSQL
+# mysqlclient>=2.2      # MySQL
+
+# Server
+# gunicorn>=21.0        # Production server
+# whitenoise>=6.6       # Static file serving
+
+# Development
+# django-debug-toolbar>=4.2  # Debug toolbar
+# python-decouple>=3.8       # Environment variables
+
+# API (if needed)
+# djangorestframework>=3.14
+# django-cors-headers>=4.3
+
+# Authentication (if adding social auth)
+# django-allauth>=0.57

@@ -37,6 +37,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Custom apps
+    'account',
+    'profiles',
+    'dashboard',
+    'habits',
+    'mood',
+    'journal',
+    'meditation',
+    'workouts',
+    'nutrition',
+    'challenges',
+    'therapy',
+    'blog',
+    'api',
+    'wellnessapp',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +69,7 @@ ROOT_URLCONF = 'wellness_platform.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -117,6 +132,14 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# Custom User Model
+AUTH_USER_MODEL = 'account.CustomUser'
+
+# Authentication URLs
+LOGIN_URL = 'account:login'
+LOGIN_REDIRECT_URL = 'dashboard:dashboard'
+LOGOUT_REDIRECT_URL = 'account:login'
 
 
 # Default primary key field type
