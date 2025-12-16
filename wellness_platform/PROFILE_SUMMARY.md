@@ -35,7 +35,7 @@ Created a comprehensive UserProfile model with:
 - **account_delete**: Secure account deletion with password verification
 
 ### 4. **Beautiful Templates** (Tailwind CSS + Dark Mode)
-- **profile_view.html**: 
+- **profile_view.html**:
   - Profile header with picture/avatar
   - Personal information cards
   - Health stats with color-coded displays
