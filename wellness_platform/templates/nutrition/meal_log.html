@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+
+{% block title %}Log Meal - PulseWell{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-green-100 via-emerald-50 to-teal-100 dark:from-gray-900 dark:via-emerald-950 dark:to-teal-950 p-4 sm:p-6 lg:p-8">
+    <div class="max-w-3xl mx-auto">
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+                🍽️ Log Meal
+            </h1>
+            <p class="text-gray-600 dark:text-gray-400">Track what you eat and monitor your nutrition</p>
+        </div>
+
+        <!-- Meal Form Card -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                <!-- Meal Type and Date Row -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ form.meal_type.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {{ form.meal_type.label }}
+                        </label>
+                        {{ form.meal_type }}
+                        {% if form.meal_type.errors %}
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.meal_type.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="{{ form.meal_date.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            {{ form.meal_date.label }}
+                        </label>
+                        {{ form.meal_date }}
+                        {% if form.meal_date.errors %}
+                            <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.meal_date.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Food Name -->
+                <div>
+                    <label for="{{ form.food_name.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {{ form.food_name.label }}
+                    </label>
+                    {{ form.food_name }}
+                    {% if form.food_name.errors %}
+                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.food_name.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Portion -->
+                <div>
+                    <label for="{{ form.portion.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {{ form.portion.label }}
+                    </label>
+                    {{ form.portion }}
+                    {% if form.portion.errors %}
+                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.portion.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Nutritional Information -->
+                <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Nutritional Information</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Calories -->
+                        <div>
+                            <label for="{{ form.calories.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {{ form.calories.label }} <span class="text-red-500">*</span>
+                            </label>
+                            {{ form.calories }}
+                            {% if form.calories.errors %}
+                                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.calories.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Protein -->
+                        <div>
+                            <label for="{{ form.protein.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {{ form.protein.label }}
+                            </label>
+                            {{ form.protein }}
+                            {% if form.protein.errors %}
+                                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.protein.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Carbs -->
+                        <div>
+                            <label for="{{ form.carbs.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {{ form.carbs.label }}
+                            </label>
+                            {{ form.carbs }}
+                            {% if form.carbs.errors %}
+                                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.carbs.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Fat -->
+                        <div>
+                            <label for="{{ form.fat.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {{ form.fat.label }}
+                            </label>
+                            {{ form.fat }}
+                            {% if form.fat.errors %}
+                                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.fat.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notes -->
+                <div>
+                    <label for="{{ form.notes.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {{ form.notes.label }}
+                    </label>
+                    {{ form.notes }}
+                    {% if form.notes.errors %}
+                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.notes.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Form Actions -->
+                <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200 dark:border-gray-700">
+                    <a href="{% url 'nutrition:daily_summary' %}" 
+                       class="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-200">
+                        Cancel
+                    </a>
+                    <button type="submit" 
+                            class="px-6 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-lg hover:from-emerald-700 hover:to-teal-700 transition duration-200 shadow-md hover:shadow-lg">
+                        Log Meal
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Quick Tip -->
+        <div class="mt-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+            <div class="flex items-start">
+                <svg class="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <div>
+                    <p class="text-sm text-blue-800 dark:text-blue-300 font-medium">Tip: Use nutrition tracking apps or food labels</p>
+                    <p class="text-sm text-blue-700 dark:text-blue-400 mt-1">
+                        For accurate calorie and macro information, check food packaging labels or use apps like MyFitnessPal or Cronometer.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

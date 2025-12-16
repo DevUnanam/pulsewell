@@ -88,7 +88,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Journal Entries</p>
-                        <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">0</p>
+                        <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">{{ total_journal_entries }}</p>
                     </div>
                     <div class="bg-purple-100 dark:bg-purple-900 rounded-full p-3">
                         <svg class="h-8 w-8 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -96,7 +96,13 @@
                         </svg>
                     </div>
                 </div>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mt-4">Write your thoughts</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-4">
+                    {% if total_journal_entries > 0 %}
+                        {{ total_journal_words|floatformat:0 }} total words written
+                    {% else %}
+                        Write your thoughts
+                    {% endif %}
+                </p>
             </div>
 
             <!-- Stat Card 4 -->
@@ -116,6 +122,119 @@
             </div>
         </div>
 
+        <!-- Nutrition Summary Card -->
+        <div class="mb-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">🍽️ Today's Nutrition</h2>
+                <a href="{% url 'nutrition:daily_summary' %}"
+                   class="text-sm text-emerald-600 dark:text-emerald-400 hover:underline">
+                    View Details →
+                </a>
+            </div>
+
+            {% if nutrition_summary.meal_count > 0 %}
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 text-center">
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Meals</p>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ nutrition_summary.meal_count }}</p>
+                </div>
+                <div class="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-4 text-center">
+                    <p class="text-sm text-orange-700 dark:text-orange-300 mb-1">Calories</p>
+                    <p class="text-2xl font-bold text-orange-600 dark:text-orange-400">{{ nutrition_summary.total_calories }}</p>
+                </div>
+                <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 text-center">
+                    <p class="text-sm text-blue-700 dark:text-blue-300 mb-1">Protein</p>
+                    <p class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{ nutrition_summary.total_protein }}g</p>
+                </div>
+                <div class="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-4 text-center">
+                    <p class="text-sm text-yellow-700 dark:text-yellow-300 mb-1">Carbs</p>
+                    <p class="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{{ nutrition_summary.total_carbs }}g</p>
+                </div>
+                <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-4 text-center">
+                    <p class="text-sm text-green-700 dark:text-green-300 mb-1">Fat</p>
+                    <p class="text-2xl font-bold text-green-600 dark:text-green-400">{{ nutrition_summary.total_fat }}g</p>
+                </div>
+            </div>
+            {% else %}
+            <div class="text-center py-8">
+                <p class="text-gray-500 dark:text-gray-400 mb-4">No meals logged yet today</p>
+                <a href="{% url 'nutrition:meal_log' %}"
+                   class="inline-block px-6 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-lg hover:from-emerald-700 hover:to-teal-700 transition shadow-md">
+                    Log Your First Meal
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Journal Summary Card -->
+        <div class="mb-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">📖 My Journal</h2>
+                <a href="{% url 'journal:journal_list' %}"
+                   class="text-sm text-purple-600 dark:text-purple-400 hover:underline">
+                    View All →
+                </a>
+            </div>
+
+            {% if total_journal_entries > 0 %}
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                <div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4 text-center">
+                    <p class="text-sm text-purple-700 dark:text-purple-300 mb-1">Total Entries</p>
+                    <p class="text-2xl font-bold text-purple-600 dark:text-purple-400">{{ total_journal_entries }}</p>
+                </div>
+                <div class="bg-pink-50 dark:bg-pink-900/20 rounded-lg p-4 text-center">
+                    <p class="text-sm text-pink-700 dark:text-pink-300 mb-1">Total Words</p>
+                    <p class="text-2xl font-bold text-pink-600 dark:text-pink-400">{{ total_journal_words|floatformat:0 }}</p>
+                </div>
+                <div class="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-4 text-center">
+                    <p class="text-sm text-indigo-700 dark:text-indigo-300 mb-1">Avg per Entry</p>
+                    <p class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+                        {% if total_journal_entries > 0 %}
+                            {{ avg_journal_words }}
+                        {% else %}
+                            0
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            {% if recent_journal_entries %}
+            <div class="space-y-3">
+                <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">Recent Entries</h3>
+                {% for entry in recent_journal_entries %}
+                <a href="{% url 'journal:journal_detail' entry.pk %}"
+                   class="block bg-gray-50 dark:bg-gray-900 rounded-lg p-4 hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-200">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-gray-900 dark:text-white line-clamp-1">{{ entry.title }}</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{{ entry.created_at|date:"M j, Y" }} • {{ entry.get_word_count }} words</p>
+                        </div>
+                        <svg class="h-5 w-5 text-gray-400 dark:text-gray-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="mt-4">
+                <a href="{% url 'journal:journal_create' %}"
+                   class="block w-full text-center px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition shadow-md">
+                    ✏️ Write New Entry
+                </a>
+            </div>
+            {% else %}
+            <div class="text-center py-8">
+                <p class="text-gray-500 dark:text-gray-400 mb-4">No journal entries yet</p>
+                <a href="{% url 'journal:journal_create' %}"
+                   class="inline-block px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition shadow-md">
+                    ✏️ Write Your First Entry
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
         <!-- Profile Quick Access & Quick Actions -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <!-- Left Column -->
@@ -129,8 +248,8 @@
                         </a>
                     </div>
                     <div class="flex items-center space-x-4">
-                        {% if user.userprofile.profile_picture %}
-                            <img src="{{ user.userprofile.profile_picture.url }}" alt="Profile" class="h-16 w-16 rounded-full object-cover border-2 border-indigo-200 dark:border-indigo-800">
+                        {% if user.profile.profile_picture %}
+                            <img src="{{ user.profile.profile_picture.url }}" alt="Profile" class="h-16 w-16 rounded-full object-cover border-2 border-indigo-200 dark:border-indigo-800">
                         {% else %}
                             <div class="h-16 w-16 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 flex items-center justify-center">
                                 <span class="text-2xl font-bold text-white">{{ user.username|first|upper }}</span>
@@ -167,7 +286,7 @@
                             </svg>
                             <span class="text-sm font-semibold text-gray-900 dark:text-white">Log Mood</span>
                         </a>
-                        <a href="#" class="flex flex-col items-center justify-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-lg hover:shadow-md transition duration-200 border border-purple-200 dark:border-purple-800">
+                        <a href="{% url 'journal:journal_create' %}" class="flex flex-col items-center justify-center p-4 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-lg hover:shadow-md transition duration-200 border border-purple-200 dark:border-purple-800">
                             <svg class="h-10 w-10 text-purple-600 dark:text-purple-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                             </svg>

@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block title %}Nutrition Goals - PulseWell{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-purple-100 via-indigo-50 to-blue-100 dark:from-gray-900 dark:via-purple-950 dark:to-indigo-950 p-4 sm:p-6 lg:p-8">
+    <div class="max-w-3xl mx-auto">
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+                🎯 Nutrition Goals
+            </h1>
+            <p class="text-gray-600 dark:text-gray-400">Set your daily nutrition targets</p>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+                    <div class="flex items-start">
+                        <svg class="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <div>
+                            <p class="text-sm text-blue-800 dark:text-blue-300 font-medium">About Nutrition Goals</p>
+                            <p class="text-sm text-blue-700 dark:text-blue-400 mt-1">
+                                Set realistic daily targets based on your activity level and health goals. Consult with a nutritionist for personalized recommendations.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calorie Goal -->
+                <div>
+                    <label for="{{ form.calorie_goal.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {{ form.calorie_goal.label }}
+                    </label>
+                    {{ form.calorie_goal }}
+                    {% if form.calorie_goal.help_text %}
+                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ form.calorie_goal.help_text }}</p>
+                    {% endif %}
+                    {% if form.calorie_goal.errors %}
+                        <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ form.calorie_goal.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Macros Grid -->
+                <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Macronutrients Goals</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Protein Goal -->
+                        <div>
+                            <label for="{{ form.protein_goal.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                💪 {{ form.protein_goal.label }}
+                            </label>
+                            {{ form.protein_goal }}
+                            {% if form.protein_goal.help_text %}
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ form.protein_goal.help_text }}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Carbs Goal -->
+                        <div>
+                            <label for="{{ form.carbs_goal.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                🍞 {{ form.carbs_goal.label }}
+                            </label>
+                            {{ form.carbs_goal }}
+                            {% if form.carbs_goal.help_text %}
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ form.carbs_goal.help_text }}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Fat Goal -->
+                        <div>
+                            <label for="{{ form.fat_goal.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                🥑 {{ form.fat_goal.label }}
+                            </label>
+                            {{ form.fat_goal }}
+                            {% if form.fat_goal.help_text %}
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ form.fat_goal.help_text }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200 dark:border-gray-700">
+                    <a href="{% url 'nutrition:daily_summary' %}" 
+                       class="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-200">
+                        Cancel
+                    </a>
+                    <button type="submit" 
+                            class="px-6 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:from-purple-700 hover:to-indigo-700 transition duration-200 shadow-md hover:shadow-lg">
+                        {% if goal %}Update Goals{% else %}Set Goals{% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Common Goal Presets -->
+        <div class="mt-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Common Goal Presets</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                    <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Balanced Diet</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">2000 cal • 50g protein • 275g carbs • 65g fat</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">General healthy balanced diet</p>
+                </div>
+                <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                    <h3 class="font-semibold text-gray-900 dark:text-white mb-2">High Protein</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">2200 cal • 150g protein • 200g carbs • 70g fat</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">For muscle building and strength training</p>
+                </div>
+                <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                    <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Weight Loss</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">1500 cal • 100g protein • 150g carbs • 50g fat</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Calorie deficit for fat loss</p>
+                </div>
+                <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                    <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Athletic Performance</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">2800 cal • 120g protein • 350g carbs • 90g fat</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">For endurance and high activity levels</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -23,6 +23,8 @@ def user_dashboard_view(request):
     # Import models here to avoid circular imports
     from habits.models import Habit
     from mood.models import MoodEntry
+    from nutrition.models import Meal, NutritionGoal
+    from journal.models import JournalEntry
 
     # Get habits data
     active_habits = request.user.habits.filter(is_active=True)
@@ -35,6 +37,26 @@ def user_dashboard_view(request):
     # Get today's mood
     today_mood = MoodEntry.get_today_mood(request.user)
 
+    # Get nutrition data for today
+    nutrition_summary = Meal.get_daily_summary(request.user, date.today())
+
+    # Get nutrition goal if exists
+    try:
+        nutrition_goal = request.user.nutrition_goal
+    except NutritionGoal.DoesNotExist:
+        nutrition_goal = None
+
+    # Get journal statistics
+    user_journal_entries = JournalEntry.objects.filter(user=request.user)
+    total_journal_entries = user_journal_entries.count()
+    total_journal_words = sum(entry.get_word_count() for entry in user_journal_entries)
+    recent_journal_entries = user_journal_entries[:3]
+
+    if total_journal_entries > 0:
+        avg_journal_words = total_journal_words // total_journal_entries
+    else:
+        avg_journal_words = 0
+
     context = {
         'user': request.user,
         'habits_completed_today': habits_completed_today,
@@ -42,6 +64,12 @@ def user_dashboard_view(request):
         'current_streak': current_streak,
         'today_mood': today_mood,
         'has_logged_mood_today': today_mood is not None,
+        'nutrition_summary': nutrition_summary,
+        'nutrition_goal': nutrition_goal,
+        'total_journal_entries': total_journal_entries,
+        'total_journal_words': total_journal_words,
+        'recent_journal_entries': recent_journal_entries,
+        'avg_journal_words': round(avg_journal_words),
     }
     return render(request, 'dashboard/user_dashboard.html', context)
 

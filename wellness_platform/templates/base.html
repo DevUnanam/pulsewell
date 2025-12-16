@@ -105,6 +105,21 @@
                 Mood Tracker
             </a>
 
+            <a href="{% url 'nutrition:daily_summary' %}"
+               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                Nutrition
+            </a>
+
+            <a href="{% url 'journal:journal_list' %}"
+               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                Journal
+            </a>
+
+            <a href="{% url 'blog:article_list' %}"
+               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                Blog
+            </a>
+
             <div class="border-t my-3 dark:border-gray-700"></div>
 
             <a href="{% url 'profiles:profile_view' %}"

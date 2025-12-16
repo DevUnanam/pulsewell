@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block title %}Weekly Summary - PulseWell{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-100 via-cyan-50 to-teal-100 dark:from-gray-900 dark:via-blue-950 dark:to-cyan-950 p-4 sm:p-6 lg:p-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="mb-8 flex items-center justify-between flex-wrap gap-4">
+            <div>
+                <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+                    📈 Weekly Summary
+                </h1>
+                <p class="text-gray-600 dark:text-gray-400">
+                    {{ summary.start_date|date:"M j" }} - {{ summary.end_date|date:"M j, Y" }}
+                </p>
+            </div>
+            
+            <div class="flex items-center space-x-2">
+                <a href="?date={{ prev_week_end|date:'Y-m-d' }}" 
+                   class="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                    <svg class="h-5 w-5 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </a>
+                <a href="?date={{ end_date|date:'Y-m-d' }}" 
+                   class="px-4 py-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300">
+                    This Week
+                </a>
+                <a href="?date={{ next_week_end|date:'Y-m-d' }}" 
+                   class="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                    <svg class="h-5 w-5 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <!-- Weekly Stats Overview -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+                <p class="text-sm text-gray-500 dark:text-gray-400">Avg Calories/Day</p>
+                <p class="text-2xl font-bold text-orange-600 dark:text-orange-400 mt-1">{{ summary.avg_calories_per_day }}</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+                <p class="text-sm text-gray-500 dark:text-gray-400">Avg Protein/Day</p>
+                <p class="text-2xl font-bold text-blue-600 dark:text-blue-400 mt-1">{{ summary.avg_protein_per_day }}g</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+                <p class="text-sm text-gray-500 dark:text-gray-400">Total Meals</p>
+                <p class="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">{{ summary.total_meals }}</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+                <p class="text-sm text-gray-500 dark:text-gray-400">Most Frequent</p>
+                <p class="text-2xl font-bold text-purple-600 dark:text-purple-400 mt-1">
+                    {% if summary.most_frequent_meal_type %}
+                        {{ summary.most_frequent_meal_type|title }}
+                    {% else %}
+                        --
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <!-- Daily Breakdown -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Daily Breakdown</h2>
+            
+            <div class="space-y-4">
+                {% for day in daily_data %}
+                <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <h3 class="font-semibold text-gray-900 dark:text-white">
+                                {{ day.date|date:"l, M j" }}
+                            </h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">{{ day.meal_count }} meals logged</p>
+                        </div>
+                        <a href="{% url 'nutrition:daily_summary' %}?date={{ day.date|date:'Y-m-d' }}" 
+                           class="text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                            View Details →
+                        </a>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <div class="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-3">
+                            <p class="text-xs text-orange-700 dark:text-orange-300 mb-1">Calories</p>
+                            <p class="text-lg font-bold text-orange-600 dark:text-orange-400">{{ day.calories }}</p>
+                        </div>
+                        <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3">
+                            <p class="text-xs text-blue-700 dark:text-blue-300 mb-1">Protein</p>
+                            <p class="text-lg font-bold text-blue-600 dark:text-blue-400">{{ day.protein }}g</p>
+                        </div>
+                        <div class="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3">
+                            <p class="text-xs text-yellow-700 dark:text-yellow-300 mb-1">Carbs</p>
+                            <p class="text-lg font-bold text-yellow-600 dark:text-yellow-400">{{ day.carbs }}g</p>
+                        </div>
+                        <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-3">
+                            <p class="text-xs text-green-700 dark:text-green-300 mb-1">Fat</p>
+                            <p class="text-lg font-bold text-green-600 dark:text-green-400">{{ day.fat }}g</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Meal Type Distribution -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Meal Type Distribution</h2>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {% for meal_type, count in summary.meal_type_counts.items %}
+                <div class="text-center p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                    <p class="text-3xl mb-2">
+                        {% if meal_type == 'breakfast' %}🍳
+                        {% elif meal_type == 'lunch' %}🍽️
+                        {% elif meal_type == 'dinner' %}🍲
+                        {% elif meal_type == 'snack' %}🍎
+                        {% endif %}
+                    </p>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">{{ meal_type|title }}</p>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ count }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Navigation Links -->
+        <div class="mt-8 flex justify-center space-x-4">
+            <a href="{% url 'nutrition:daily_summary' %}" 
+               class="px-6 py-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white hover:shadow-md transition">
+                Daily Summary
+            </a>
+            <a href="{% url 'nutrition:meal_history' %}" 
+               class="px-6 py-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white hover:shadow-md transition">
+                Meal History
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
