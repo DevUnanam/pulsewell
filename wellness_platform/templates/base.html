@@ -5,38 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}PulseWell - Your Wellness Companion{% endblock %}</title>
-
-    <!-- Tailwind CSS -->
     <link href="{% static 'css/output.css' %}" rel="stylesheet">
-
-    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml"
-          href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💜</text></svg>">
-
-    <!-- Theme bootstrap -->
-    <script>
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            document.documentElement.classList.add('dark');
-        }
-    </script>
-
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💜</text></svg>">
     {% block extra_css %}{% endblock %}
 </head>
 
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 antialiased">
-
-{% if user.is_authenticated %}
-
-<!-- ================= NAVBAR ================= -->
-<nav class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
+<body class="bg-emerald-900 dark:bg-gray-900 text-gray-900 dark:text-gray-100 antialiased">
+    {% if user.is_authenticated %}
+    <!-- ================= NAVBAR ================= -->
+     <nav class="bg-emerald-950 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
     <div class="px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
+        <div class="flex justify-between h-16 items-center">
 
             <div class="flex items-center">
                 <!-- Mobile sidebar toggle -->
                 <button onclick="toggleSidebar()"
-                        class="lg:hidden mr-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                        class="lg:hidden mr-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M4 6h16M4 12h16M4 18h16"/>
@@ -57,13 +42,19 @@
                     Profile
                 </a>
 
-                <button onclick="toggleTheme()"
-                        class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700">
-                    🌙
+                <!-- Theme toggle -->
+                <button onclick="toggleTheme()" id="theme-toggle"
+                        class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition duration-200">
+                    <svg id="theme-icon-light" class="h-5 w-5 text-gray-700 block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                    <svg id="theme-icon-dark" class="h-5 w-5 text-gray-700 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    </svg>
                 </button>
 
                 <a href="{% url 'account:logout' %}"
-                   class="px-4 py-2 text-sm text-white bg-red-600 rounded-lg hover:bg-red-700">
+                   class="px-4 py-2 text-sm text-white bg-red-600 rounded-lg hover:bg-red-700 transition">
                     Logout
                 </a>
             </div>
@@ -75,55 +66,55 @@
 
     <!-- ================= SIDEBAR ================= -->
     <aside id="sidebar"
-           class="fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700
+           class="fixed inset-y-0 left-0 z-40 w-64 bg-emerald-950 dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700
                   transform -translate-x-full lg:translate-x-0 transition-transform duration-300 mt-16 overflow-y-auto">
 
         <nav class="p-4 space-y-1">
 
             <a href="{% url 'dashboard:dashboard' %}"
-               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
                 Dashboard
             </a>
 
             <a href="{% url 'challenges:explore' %}"
-               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
                 Challenges
             </a>
 
             <a href="{% url 'challenges:my_challenges' %}"
-               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
                 My Challenges
             </a>
 
             <a href="{% url 'habits:habit_list' %}"
-               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
                 Habits
             </a>
 
             <a href="{% url 'mood:mood_history' %}"
-               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
                 Mood Tracker
             </a>
 
             <a href="{% url 'nutrition:daily_summary' %}"
-               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
                 Nutrition
             </a>
 
             <a href="{% url 'journal:journal_list' %}"
-               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
                 Journal
             </a>
 
             <a href="{% url 'blog:article_list' %}"
-               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
                 Blog
             </a>
 
             <div class="border-t my-3 dark:border-gray-700"></div>
 
             <a href="{% url 'profiles:profile_view' %}"
-               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
                 Profile
             </a>
 
@@ -138,18 +129,15 @@
 {% endif %}
 
 <!-- ================= MAIN CONTENT ================= -->
-<main class="{% if user.is_authenticated %}flex-1 lg:ml-64{% endif %} p-4">
+<main class="{% if user.is_authenticated %}flex-1 lg:ml-64{% endif %} min-h-screen p-4
+         bg-emerald-300
+         dark:bg-gradient-to-br dark:from-gray-900 dark:via-indigo-950 dark:to-purple-950">
     {% block content %}{% endblock %}
 </main>
 
 <!-- ================= SCRIPTS ================= -->
 <script>
-    function toggleTheme() {
-        const html = document.documentElement;
-        const isDark = html.classList.toggle('dark');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    }
-
+    // Sidebar toggle
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('sidebar-overlay');
@@ -162,6 +150,39 @@
             document.getElementById('sidebar')?.classList.remove('-translate-x-full');
             document.getElementById('sidebar-overlay')?.classList.add('hidden');
         }
+    });
+
+    // Dark/Light mode toggle
+    document.addEventListener('DOMContentLoaded', () => {
+        const html = document.documentElement;
+        const lightIcon = document.getElementById('theme-icon-light');
+        const darkIcon = document.getElementById('theme-icon-dark');
+        const savedTheme = localStorage.getItem('theme');
+
+        // Set initial theme
+        if (savedTheme === 'dark') {
+            html.classList.add('dark');
+            lightIcon.classList.remove('block'); lightIcon.classList.add('hidden');
+            darkIcon.classList.remove('hidden'); darkIcon.classList.add('block');
+        } else {
+            html.classList.remove('dark');
+            lightIcon.classList.remove('hidden'); lightIcon.classList.add('block');
+            darkIcon.classList.remove('block'); darkIcon.classList.add('hidden');
+        }
+
+        // Theme toggle function
+        window.toggleTheme = function() {
+            const isDark = html.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+
+            if (isDark) {
+                lightIcon.classList.remove('hidden'); lightIcon.classList.add('block');
+                darkIcon.classList.remove('block'); darkIcon.classList.add('hidden');
+            } else {
+                lightIcon.classList.remove('block'); lightIcon.classList.add('hidden');
+                darkIcon.classList.remove('hidden'); darkIcon.classList.add('block');
+            }
+        };
     });
 </script>
 
