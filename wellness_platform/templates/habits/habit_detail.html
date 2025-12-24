@@ -8,7 +8,7 @@
     <div class="max-w-5xl mx-auto">
         <!-- Back Button -->
         <div class="mb-6">
-            <a href="{% url 'habits:habit_list' %}" class="inline-flex items-center text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium">
+            <a href="{% url 'habits:habit_list' %}" class="inline-flex items-center text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-medium">
                 <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                 </svg>
@@ -27,7 +27,7 @@
                 </div>
                 <div class="flex items-center space-x-2">
                     {% if habit.category %}
-                    <span class="px-3 py-1 text-sm font-medium bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-lg">
+                    <span class="px-3 py-1 text-sm font-medium bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-lg">
                         {{ habit.get_category_display }}
                     </span>
                     {% endif %}
@@ -47,8 +47,8 @@
                     <p class="text-3xl font-bold text-purple-600 dark:text-purple-400">{{ habit.longest_streak }}</p>
                     <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Longest Streak</p>
                 </div>
-                <div class="text-center p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg">
-                    <p class="text-3xl font-bold text-indigo-600 dark:text-indigo-400">{{ habit.total_completions }}</p>
+                <div class="text-center p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
+                    <p class="text-3xl font-bold text-emerald-600 dark:text-emerald-400">{{ habit.total_completions }}</p>
                     <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Total Completions</p>
                 </div>
                 <div class="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
@@ -63,7 +63,7 @@
                 <form method="post" action="{% url 'habits:habit_complete' habit.pk %}" class="flex-1 sm:flex-none">
                     {% csrf_token %}
                     <input type="hidden" name="next" value="{% url 'habits:habit_detail' habit.pk %}">
-                    <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition duration-200 flex items-center justify-center space-x-2">
+                    <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition duration-200 flex items-center justify-center space-x-2">
                         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
@@ -106,13 +106,13 @@
             <div class="grid grid-cols-5 sm:grid-cols-10 gap-2">
                 {% for day in calendar_data %}
                 <div class="relative group">
-                    <div class="aspect-square rounded-lg border-2 flex items-center justify-center transition duration-200 {% if day.completed %}bg-green-500 border-green-600 dark:bg-green-600 dark:border-green-700{% elif day.is_today %}bg-indigo-100 border-indigo-500 dark:bg-indigo-900/30 dark:border-indigo-600{% else %}bg-gray-100 border-gray-300 dark:bg-gray-700 dark:border-gray-600{% endif %}">
+                    <div class="aspect-square rounded-lg border-2 flex items-center justify-center transition duration-200 {% if day.completed %}bg-green-500 border-green-600 dark:bg-green-600 dark:border-green-700{% elif day.is_today %}bg-emerald-100 border-emerald-500 dark:bg-emerald-900/30 dark:border-emerald-600{% else %}bg-gray-100 border-gray-300 dark:bg-gray-700 dark:border-gray-600{% endif %}">
                         {% if day.completed %}
                         <svg class="h-4 w-4 sm:h-5 sm:w-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                         </svg>
                         {% else %}
-                        <span class="text-xs sm:text-sm font-medium {% if day.is_today %}text-indigo-700 dark:text-indigo-300{% else %}text-gray-500 dark:text-gray-400{% endif %}">
+                        <span class="text-xs sm:text-sm font-medium {% if day.is_today %}text-emerald-700 dark:text-emerald-300{% else %}text-gray-500 dark:text-gray-400{% endif %}">
                             {{ day.date|date:"d" }}
                         </span>
                         {% endif %}
@@ -133,7 +133,7 @@
                     <span class="text-gray-600 dark:text-gray-400">Completed</span>
                 </div>
                 <div class="flex items-center space-x-2">
-                    <div class="w-4 h-4 bg-indigo-100 dark:bg-indigo-900/30 border-2 border-indigo-500 rounded"></div>
+                    <div class="w-4 h-4 bg-emerald-100 dark:bg-emerald-900/30 border-2 border-emerald-500 rounded"></div>
                     <span class="text-gray-600 dark:text-gray-400">Today</span>
                 </div>
                 <div class="flex items-center space-x-2">

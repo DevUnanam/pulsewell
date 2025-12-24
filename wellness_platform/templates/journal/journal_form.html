@@ -39,7 +39,7 @@
                     <div class="flex items-center justify-between flex-wrap gap-4">
                         <div class="flex items-center space-x-2">
                             <button type="button" onclick="togglePreview()" id="preview-toggle"
-                                    class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition">
+                                    class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-medium transition">
                                 👁️ Preview
                             </button>
                             <span class="text-sm text-gray-600 dark:text-gray-400">Markdown supported</span>
@@ -141,7 +141,7 @@
             editorContainer.classList.add('hidden');
             previewContainer.classList.remove('hidden');
             previewToggle.textContent = '✏️ Edit';
-            previewToggle.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+            previewToggle.classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
             previewToggle.classList.add('bg-green-600', 'hover:bg-green-700');
         } else {
             // Show editor
@@ -149,7 +149,7 @@
             previewContainer.classList.add('hidden');
             previewToggle.textContent = '👁️ Preview';
             previewToggle.classList.remove('bg-green-600', 'hover:bg-green-700');
-            previewToggle.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+            previewToggle.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
         }
     }
 

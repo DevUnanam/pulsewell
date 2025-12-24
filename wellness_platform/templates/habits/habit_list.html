@@ -12,7 +12,7 @@
                 <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">My Habits</h1>
                 <p class="text-gray-600 dark:text-gray-400">Track your daily and weekly habits</p>
             </div>
-            <a href="{% url 'habits:habit_create' %}" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition duration-200 flex items-center space-x-2">
+            <a href="{% url 'habits:habit_create' %}" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition duration-200 flex items-center space-x-2">
                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>
@@ -28,8 +28,8 @@
                         <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">Total Habits</p>
                         <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ total_habits }}</p>
                     </div>
-                    <div class="p-3 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
-                        <svg class="h-8 w-8 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
+                        <svg class="h-8 w-8 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                         </svg>
                     </div>
@@ -89,7 +89,7 @@
                     <div class="flex justify-between items-start mb-2">
                         <h3 class="text-xl font-semibold text-gray-900 dark:text-white">{{ habit.name }}</h3>
                         {% if habit.category %}
-                        <span class="px-2 py-1 text-xs font-medium bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded">
+                        <span class="px-2 py-1 text-xs font-medium bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded">
                             {{ habit.get_category_display }}
                         </span>
                         {% endif %}
@@ -114,7 +114,7 @@
                             <p class="text-xs text-gray-600 dark:text-gray-400">Best</p>
                         </div>
                         <div class="text-center">
-                            <p class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{{ habit.total_completions }}</p>
+                            <p class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{{ habit.total_completions }}</p>
                             <p class="text-xs text-gray-600 dark:text-gray-400">Total</p>
                         </div>
                     </div>
@@ -135,7 +135,7 @@
                     <form method="post" action="{% url 'habits:habit_complete' habit.pk %}">
                         {% csrf_token %}
                         <input type="hidden" name="next" value="{% url 'habits:habit_list' %}">
-                        <button type="submit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition duration-200 flex items-center justify-center space-x-2">
+                        <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition duration-200 flex items-center justify-center space-x-2">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
@@ -147,7 +147,7 @@
 
                 <!-- Card Footer -->
                 <div class="px-6 py-3 bg-gray-50 dark:bg-gray-900/50 border-t border-gray-200 dark:border-gray-700">
-                    <a href="{% url 'habits:habit_detail' habit.pk %}" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 text-sm font-medium flex items-center justify-center">
+                    <a href="{% url 'habits:habit_detail' habit.pk %}" class="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 text-sm font-medium flex items-center justify-center">
                         View Details
                         <svg class="h-4 w-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -166,7 +166,7 @@
                 </svg>
                 <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">No habits yet</h3>
                 <p class="text-gray-600 dark:text-gray-400 mb-6">Start building better habits today!</p>
-                <a href="{% url 'habits:habit_create' %}" class="inline-flex items-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition duration-200">
+                <a href="{% url 'habits:habit_create' %}" class="inline-flex items-center px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition duration-200">
                     <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                     </svg>

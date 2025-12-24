@@ -150,7 +150,7 @@ python manage.py runserver
 ## 🎨 Design System
 
 ### Colors
-- **Primary**: Indigo (600-700)
+- **Primary**: Emerald/Sage Green (600-700)
 - **Secondary**: Purple (600-700)
 - **Accent**: Pink (50-100)
 - **Success**: Green (600)

@@ -4,13 +4,13 @@
 {% block title %}Dashboard - PulseWell{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-emerald-950 dark:bg-gray-900 p-4 sm:p-6 lg:p-8">
+<div class="min-h-screen dark:bg-gray-900 p-4 sm:p-6 lg:p-8">
         <!-- Welcome Section -->
         <div class="mb-8">
             <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">
                 Welcome back, {% if user.first_name %}{{ user.first_name }}{% else %}{{ user.username }}{% endif %}! 👋
             </h1>
-            <p class="text-gray-600 dark:text-gray-400">Here's your wellness overview for today</p>
+            <p class="text-red-600 dark:text-gray-400">Here's your wellness overview for today</p>
         </div>
 
         <!-- Stats Grid -->
@@ -199,9 +199,9 @@
                 </div>
 
                 <!-- Wellness Tips -->
-                <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-lg p-6 text-white">
+                <div class="bg-gradient-to-r from-emerald-600 to-purple-600 rounded-xl shadow-lg p-6 text-white">
                     <h3 class="text-xl font-bold mb-2">💡 Wellness Tip of the Day</h3>
-                    <p class="text-indigo-100">Start your day with a glass of water and 5 minutes of deep breathing. Small habits create big changes!</p>
+                    <p class="text-emerald-100">Start your day with a glass of water and 5 minutes of deep breathing. Small habits create big changes!</p>
                 </div>
             </div>
 

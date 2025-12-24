@@ -7,7 +7,7 @@
     <div class="max-w-4xl mx-auto">
         <!-- Back Button -->
         <a href="{% if article %}{% url 'blog:article_detail' article.slug %}{% else %}{% url 'blog:article_list' %}{% endif %}"
-           class="inline-flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 mb-6 transition duration-200">
+           class="inline-flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 mb-6 transition duration-200">
             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
             </svg>
@@ -41,7 +41,7 @@
                         <button type="button"
                                 onclick="togglePreview()"
                                 id="preview-toggle"
-                                class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-200 text-sm font-medium">
+                                class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition duration-200 text-sm font-medium">
                             👁️ Preview
                         </button>
                     </div>
@@ -134,7 +134,7 @@
                 <!-- Submit Buttons -->
                 <div class="flex items-center space-x-4">
                     <button type="submit"
-                            class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition duration-200 shadow-md hover:shadow-lg font-medium">
+                            class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-purple-600 text-white rounded-lg hover:from-emerald-700 hover:to-purple-700 transition duration-200 shadow-md hover:shadow-lg font-medium">
                         {{ action }} Article
                     </button>
                     <a href="{% if article %}{% url 'blog:article_detail' article.slug %}{% else %}{% url 'blog:article_list' %}{% endif %}"
@@ -155,11 +155,11 @@
 .prose p { @apply text-gray-700 dark:text-gray-300 mb-4 leading-relaxed; }
 .prose strong { @apply font-bold text-gray-900 dark:text-white; }
 .prose em { @apply italic; }
-.prose a { @apply text-indigo-600 dark:text-indigo-400 hover:underline; }
+.prose a { @apply text-emerald-600 dark:text-emerald-400 hover:underline; }
 .prose ul { @apply list-disc list-inside mb-4 space-y-2 text-gray-700 dark:text-gray-300; }
 .prose ol { @apply list-decimal list-inside mb-4 space-y-2 text-gray-700 dark:text-gray-300; }
-.prose blockquote { @apply border-l-4 border-indigo-600 dark:border-indigo-400 pl-4 italic text-gray-600 dark:text-gray-400 my-4; }
-.prose code { @apply bg-gray-100 dark:bg-gray-900 px-2 py-1 rounded text-sm font-mono text-indigo-600 dark:text-indigo-400; }
+.prose blockquote { @apply border-l-4 border-emerald-600 dark:border-emerald-400 pl-4 italic text-gray-600 dark:text-gray-400 my-4; }
+.prose code { @apply bg-gray-100 dark:bg-gray-900 px-2 py-1 rounded text-sm font-mono text-emerald-600 dark:text-emerald-400; }
 .prose pre { @apply bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto mb-4; }
 .prose pre code { @apply bg-transparent p-0 text-gray-800 dark:text-gray-200; }
 </style>
@@ -189,7 +189,7 @@ function togglePreview() {
         editor.classList.add('hidden');
         preview.classList.remove('hidden');
         button.textContent = '✏️ Edit';
-        button.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+        button.classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
         button.classList.add('bg-green-600', 'hover:bg-green-700');
     } else {
         // Show editor
@@ -197,7 +197,7 @@ function togglePreview() {
         preview.classList.add('hidden');
         button.textContent = '👁️ Preview';
         button.classList.remove('bg-green-600', 'hover:bg-green-700');
-        button.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+        button.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
     }
 }
 </script>

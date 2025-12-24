@@ -4,41 +4,7 @@
 {% block title %}Dashboard - PulseWell{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-emerald-950 dark:bg-gray-900">
-    <!-- Navigation Bar -->
-    <nav class="bg-emerald-200 dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0 flex items-center">
-                        <div class="h-10 w-10 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full flex items-center justify-center">
-                            <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                            </svg>
-                        </div>
-                        <span class="ml-3 text-xl font-bold text-gray-900 dark:text-white">PulseWell</span>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <a href="{% url 'profiles:profile_view' %}" class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium transition duration-200 flex items-center space-x-1">
-                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                        </svg>
-                        <span>Profile</span>
-                    </a>
-                    <button onclick="toggleTheme()" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition duration-200">
-                        <svg class="h-5 w-5 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-                        </svg>
-                    </button>
-                    <a href="{% url 'account:logout' %}" class="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition duration-200">
-                        Logout
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
+<div class="min-h-screen dark:bg-gray-900">
     <!-- Main Content -->
     <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <!-- Welcome Section -->
@@ -186,9 +152,9 @@
                     <p class="text-sm text-pink-700 dark:text-pink-300 mb-1">Total Words</p>
                     <p class="text-2xl font-bold text-pink-600 dark:text-pink-400">{{ total_journal_words|floatformat:0 }}</p>
                 </div>
-                <div class="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-4 text-center">
-                    <p class="text-sm text-indigo-700 dark:text-indigo-300 mb-1">Avg per Entry</p>
-                    <p class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+                <div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-lg p-4 text-center">
+                    <p class="text-sm text-emerald-700 dark:text-emerald-300 mb-1">Avg per Entry</p>
+                    <p class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
                         {% if total_journal_entries > 0 %}
                             {{ avg_journal_words }}
                         {% else %}
@@ -243,15 +209,15 @@
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-2xl font-bold text-gray-900 dark:text-white">My Profile</h2>
-                        <a href="{% url 'profiles:profile_edit' %}" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 text-sm font-medium">
+                        <a href="{% url 'profiles:profile_edit' %}" class="text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 text-sm font-medium">
                             Edit
                         </a>
                     </div>
                     <div class="flex items-center space-x-4">
                         {% if user.profile.profile_picture %}
-                            <img src="{{ user.profile.profile_picture.url }}" alt="Profile" class="h-16 w-16 rounded-full object-cover border-2 border-indigo-200 dark:border-indigo-800">
+                            <img src="{{ user.profile.profile_picture.url }}" alt="Profile" class="h-16 w-16 rounded-full object-cover border-2 border-emerald-200 dark:border-emerald-800">
                         {% else %}
-                            <div class="h-16 w-16 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 flex items-center justify-center">
+                            <div class="h-16 w-16 rounded-full bg-gradient-to-r from-emerald-600 to-purple-600 flex items-center justify-center">
                                 <span class="text-2xl font-bold text-white">{{ user.username|first|upper }}</span>
                             </div>
                         {% endif %}
@@ -262,7 +228,7 @@
                             <p class="text-sm text-gray-500 dark:text-gray-400">@{{ user.username }}</p>
                         </div>
                     </div>
-                    <a href="{% url 'profiles:profile_view' %}" class="mt-4 w-full inline-flex justify-center items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition duration-200">
+                    <a href="{% url 'profiles:profile_view' %}" class="mt-4 w-full inline-flex justify-center items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition duration-200">
                         <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                         </svg>
@@ -302,9 +268,9 @@
                 </div>
 
                 <!-- Wellness Tips -->
-                <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-lg p-6 text-white">
+                <div class="bg-gradient-to-r from-emerald-600 to-purple-600 rounded-xl shadow-lg p-6 text-white">
                     <h3 class="text-xl font-bold mb-2">💡 Wellness Tip of the Day</h3>
-                    <p class="text-indigo-100">Start your day with a glass of water and 5 minutes of deep breathing. Small habits create big changes!</p>
+                    <p class="text-emerald-100">Start your day with a glass of water and 5 minutes of deep breathing. Small habits create big changes!</p>
                 </div>
             </div>
 

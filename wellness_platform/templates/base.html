@@ -1,125 +1,117 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}PulseWell - Your Wellness Companion{% endblock %}</title>
-    <link href="{% static 'css/output.css' %}" rel="stylesheet">
-    <link rel="icon" type="image/svg+xml"
-    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💜</text></svg>">
-    {% block extra_css %}{% endblock %}
-</head>
-
-<body class="bg-emerald-900 dark:bg-gray-900 text-gray-900 dark:text-gray-100 antialiased">
-    {% if user.is_authenticated %}
-    <!-- ================= NAVBAR ================= -->
-     <nav class="bg-emerald-950 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
-    <div class="px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16 items-center">
-
-            <div class="flex items-center">
-                <!-- Mobile sidebar toggle -->
-                <button onclick="toggleSidebar()"
-                        class="lg:hidden mr-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M4 6h16M4 12h16M4 18h16"/>
-                    </svg>
-                </button>
-
-                <a href="{% url 'dashboard:dashboard' %}" class="flex items-center gap-3">
-                    <div class="h-9 w-9 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 flex items-center justify-center">
-                        <span class="text-white font-bold">PW</span>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}PulseWell - Your Wellness Companion{% endblock %}</title>
+        <link href="{% static 'css/output.css' %}" rel="stylesheet">
+        <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💜</text></svg>">
+        {% block extra_css %}{% endblock %}
+    </head>
+    <body class=" dark:bg-gray-900 text-gray-900 dark:text-gray-100 antialiased">
+        {% if user.is_authenticated %}
+        <!-- ================= NAVBAR ================= -->
+         <nav class="bg-emerald-900 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
+            <div class="px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16 items-center">
+                    <div class="flex items-center">
+                        <!-- Mobile sidebar toggle -->
+                         {% comment %} <button onclick="toggleSidebar()"class="lg:hidden mr-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                            </svg>
+                        </button> {% endcomment %}
+                        <a href="{% url 'dashboard:dashboard' %}" class="flex items-center gap-3">
+                            <div class="h-12 w-12 rounded-full border p-2 bg-emerald-600 flex items-center justify-center">
+                                <span class="text-black font-bold">PW</span>
+                            </div>
+                            {% comment %} <span class="text-lg font-bold">PulseWell</span> {% endcomment %}
+                        </a>
                     </div>
-                    <span class="text-lg font-bold">PulseWell</span>
-                </a>
+                    <div class="flex items-center gap-6">
+                        <!-- Profile icon -->
+                         <a href="{% url 'profiles:profile_view' %}" title="Profile" class="p-2 border rounded-lg hover:bg-emerald-100 dark:hover:bg-gray-700 transition">
+                         {% comment %} user icon {% endcomment %}
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4.5" stroke="currentColor"></circle><path stroke="currentColor" stroke-linecap="round" d="M3.5 21.5v-4.342C3.5 15.414 7.306 14 12 14s8.5 1.414 8.5 3.158V21.5"></path></svg>
+                        </a>
+                        <!-- Logout icon -->
+                         <a href="{% url 'account:logout' %}" title="Logout" class="p-2 rounded-lg border hover:bg-red-700 transition"><!-- Logout icon -->
+                            <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
             </div>
-
-            <div class="flex items-center gap-3">
-                <a href="{% url 'profiles:profile_view' %}"
-                   class="hidden sm:block text-sm hover:text-indigo-600">
-                    Profile
-                </a>
-
-                <!-- Theme toggle -->
-                <button onclick="toggleTheme()" id="theme-toggle"
-                        class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition duration-200">
-                    <svg id="theme-icon-light" class="h-5 w-5 text-gray-700 block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                    </svg>
-                    <svg id="theme-icon-dark" class="h-5 w-5 text-gray-700 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-                    </svg>
-                </button>
-
-                <a href="{% url 'account:logout' %}"
-                   class="px-4 py-2 text-sm text-white bg-red-600 rounded-lg hover:bg-red-700 transition">
-                    Logout
-                </a>
-            </div>
-        </div>
-    </div>
-</nav>
-
-<div class="flex">
-
-    <!-- ================= SIDEBAR ================= -->
-    <aside id="sidebar"
-           class="fixed inset-y-0 left-0 z-40 w-64 bg-emerald-950 dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700
-                  transform -translate-x-full lg:translate-x-0 transition-transform duration-300 mt-16 overflow-y-auto">
-
-        <nav class="p-4 space-y-1">
-
-            <a href="{% url 'dashboard:dashboard' %}"
-               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-                Dashboard
-            </a>
-
-            <a href="{% url 'challenges:explore' %}"
-               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-                Challenges
-            </a>
-
-            <a href="{% url 'challenges:my_challenges' %}"
-               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-                My Challenges
-            </a>
-
-            <a href="{% url 'habits:habit_list' %}"
-               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-                Habits
-            </a>
-
-            <a href="{% url 'mood:mood_history' %}"
-               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-                Mood Tracker
-            </a>
-
-            <a href="{% url 'nutrition:daily_summary' %}"
-               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-                Nutrition
-            </a>
-
-            <a href="{% url 'journal:journal_list' %}"
-               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-                Journal
-            </a>
-
-            <a href="{% url 'blog:article_list' %}"
-               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-                Blog
-            </a>
-
-            <div class="border-t my-3 dark:border-gray-700"></div>
-
-            <a href="{% url 'profiles:profile_view' %}"
-               class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-                Profile
-            </a>
-
         </nav>
-    </aside>
+        <div class="flex">
+            <!-- ================= SIDEBAR ================= -->
+             <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 bg-emerald-950 dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700transform -translate-x-full lg:translate-x-0 transition-transform duration-300 mt-16 overflow-y-auto">
+                <nav class="p-4 space-y-1">
+                    <!-- Dashboard -->
+                     <a href="{% url 'dashboard:dashboard' %}" class="flex items-center gap-4 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7m-9 2v8m4-8v8m5-8l2 2"/>
+                        </svg><span>Dashboard</span>
+                    </a>
+                    <!-- Challenges -->
+                     <a href="{% url 'challenges:explore' %}" class="flex items-center gap-4 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg> <span>Challenges</span>
+                    </a>
+                    <!-- My Challenges -->
+                     <a href="{% url 'challenges:my_challenges' %}" class="flex items-center gap-4 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6M9 8h6M4 6h16v12H4z"/>
+                        </svg> <span>My Challenges</span>
+                    </a>
+                    <!-- Habits -->
+                     <a href="{% url 'habits:habit_list' %}" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2"/>
+                        </svg> <span>Habits</span>
+                    </a>
+                    <!-- Mood Tracker -->
+                     <a href="{% url 'mood:mood_history' %}"
+                     class="flex items-center gap-4 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M12 20a8 8 0 100-16 8 8 0 000 16z"/>
+                    </svg>
+                    <span>Mood Tracker</span>
+                </a>
+
+                <!-- Nutrition -->
+                 <a href="{% url 'nutrition:daily_summary' %}"class="flex items-center gap-4 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 1.343-3 3v9h6v-9c0-1.657-1.343-3-3-3z"/>
+                    </svg>
+                    <span>Nutrition</span>
+                </a>
+
+                <!-- Journal -->
+                 <a href="{% url 'journal:journal_list' %}" class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                         d="M8 16h8M8 12h8M8 8h8M4 4h16v16H4z"/>
+                        </svg> <span>Journal</span>
+                    </a>
+
+                    <!-- Blog -->
+                     <a href="{% url 'blog:article_list' %}"
+                     class="flex items-center gap-4 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14-4H5m14 8H5"/>
+                    </svg>
+                    <span>Blog</span> </a>
+
+                    <div class="border-t my-3 dark:border-gray-700"></div>
+
+                    <!-- Profile -->
+                     <a href="{% url 'profiles:profile_view' %}"
+                     class="flex items-center gap-4 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9 9 0 1118.88 6.196M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    <span>Profile</span> </a>
+                </nav>
+            </aside>
 
     <!-- Overlay -->
     <div id="sidebar-overlay"
@@ -130,8 +122,8 @@
 
 <!-- ================= MAIN CONTENT ================= -->
 <main class="{% if user.is_authenticated %}flex-1 lg:ml-64{% endif %} min-h-screen p-4
-         bg-emerald-300
-         dark:bg-gradient-to-br dark:from-gray-900 dark:via-indigo-950 dark:to-purple-950">
+         bg-red-500
+         dark:bg-gradient-to-br dark:from-gray-900 dark:via-emerald-950 dark:to-purple-950">
     {% block content %}{% endblock %}
 </main>
 
