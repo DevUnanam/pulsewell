@@ -54,8 +54,8 @@ def challenge_explore(request):
             status='active'
         ).values_list('challenge_id', flat=True)
 
-    # Pagination - 12 per page
-    paginator = Paginator(challenges, 12)
+    # Pagination - 10 per page
+    paginator = Paginator(challenges, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
