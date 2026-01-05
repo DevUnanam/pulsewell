@@ -4,7 +4,7 @@
 {% block title %}Daily Check-In - {{ user_challenge.challenge.title }}{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-emerald-950 dark:bg-gray-900 py-8">
+<div class="min-h-screen dark:bg-gray-900 py-8">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Back Button -->
         <a href="{% url 'challenges:my_challenge_detail' pk=user_challenge.pk %}" class="inline-flex items-center text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 mb-6">
